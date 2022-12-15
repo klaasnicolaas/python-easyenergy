@@ -1,0 +1,146 @@
+[
+    {
+        "Timestamp": "2022-12-13T23:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.464502200000000000,
+        "TariffReturn": 1.464502200000000000
+    },
+    {
+        "Timestamp": "2022-12-14T00:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.464502200000000000,
+        "TariffReturn": 1.464502200000000000
+    },
+    {
+        "Timestamp": "2022-12-14T01:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.464502200000000000,
+        "TariffReturn": 1.464502200000000000
+    },
+    {
+        "Timestamp": "2022-12-14T02:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.464502200000000000,
+        "TariffReturn": 1.464502200000000000
+    },
+    {
+        "Timestamp": "2022-12-14T03:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.464502200000000000,
+        "TariffReturn": 1.464502200000000000
+    },
+    {
+        "Timestamp": "2022-12-14T04:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.464502200000000000,
+        "TariffReturn": 1.464502200000000000
+    },
+    {
+        "Timestamp": "2022-12-14T05:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T06:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T07:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T08:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T09:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T10:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T11:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T12:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T13:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T14:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T15:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T16:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T17:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T18:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T19:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T20:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T21:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T22:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
+    }
+]
