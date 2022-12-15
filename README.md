@@ -187,7 +187,7 @@ SOFTWARE.
 [code-quality]: https://github.com/klaasnicolaas/python-easyenergy/actions/workflows/codeql.yaml
 [commits-shield]: https://img.shields.io/github/commit-activity/y/klaasnicolaas/python-easyenergy.svg
 [commits-url]: https://github.com/klaasnicolaas/python-easyenergy/commits/main
-[codecov-shield]: https://codecov.io/gh/klaasnicolaas/python-easyenergy/branch/main/graph/badge.svg?token=29Y5JL4356
+[codecov-shield]: https://codecov.io/gh/klaasnicolaas/python-easyenergy/branch/main/graph/badge.svg?token=RYhiDUamT6
 [codecov-url]: https://codecov.io/gh/klaasnicolaas/python-easyenergy
 [downloads-shield]: https://img.shields.io/pypi/dm/easyenergy
 [downloads-url]: https://pypistats.org/packages/easyenergy
@@ -196,7 +196,7 @@ SOFTWARE.
 [license-shield]: https://img.shields.io/github/license/klaasnicolaas/python-easyenergy.svg
 [last-commit-shield]: https://img.shields.io/github/last-commit/klaasnicolaas/python-easyenergy.svg
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2022.svg
-[maintainability-shield]: https://api.codeclimate.com/v1/badges/615e7a78f1a6191d4731/maintainability
+[maintainability-shield]: https://api.codeclimate.com/v1/badges/8628757a4bde52dbfaf6/maintainability
 [maintainability-url]: https://codeclimate.com/github/klaasnicolaas/python-easyenergy/maintainability
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-experimental-yellow.svg
 [pypi]: https://pypi.org/project/easyenergy/
