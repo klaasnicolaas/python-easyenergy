@@ -1,0 +1,146 @@
+[
+    {
+        "Timestamp": "2022-12-13T23:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.294627000000000000,
+        "TariffReturn": 0.27030
+    },
+    {
+        "Timestamp": "2022-12-14T00:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.296534500000000000,
+        "TariffReturn": 0.27205
+    },
+    {
+        "Timestamp": "2022-12-14T01:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.295204700000000000,
+        "TariffReturn": 0.27083
+    },
+    {
+        "Timestamp": "2022-12-14T02:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.303020000000000000,
+        "TariffReturn": 0.27800
+    },
+    {
+        "Timestamp": "2022-12-14T03:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.306181000000000000,
+        "TariffReturn": 0.28090
+    },
+    {
+        "Timestamp": "2022-12-14T04:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.337791000000000000,
+        "TariffReturn": 0.30990
+    },
+    {
+        "Timestamp": "2022-12-14T05:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.402013800000000000,
+        "TariffReturn": 0.36882
+    },
+    {
+        "Timestamp": "2022-12-14T06:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.539517300000000000,
+        "TariffReturn": 0.49497
+    },
+    {
+        "Timestamp": "2022-12-14T07:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.588589100000000000,
+        "TariffReturn": 0.53999
+    },
+    {
+        "Timestamp": "2022-12-14T08:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.620994800000000000,
+        "TariffReturn": 0.56972
+    },
+    {
+        "Timestamp": "2022-12-14T09:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.616046200000000000,
+        "TariffReturn": 0.56518
+    },
+    {
+        "Timestamp": "2022-12-14T10:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.619130900000000000,
+        "TariffReturn": 0.56801
+    },
+    {
+        "Timestamp": "2022-12-14T11:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.499470700000000000,
+        "TariffReturn": 0.45823
+    },
+    {
+        "Timestamp": "2022-12-14T12:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.492222200000000000,
+        "TariffReturn": 0.45158
+    },
+    {
+        "Timestamp": "2022-12-14T13:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.561295500000000000,
+        "TariffReturn": 0.51495
+    },
+    {
+        "Timestamp": "2022-12-14T14:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.576097700000000000,
+        "TariffReturn": 0.52853
+    },
+    {
+        "Timestamp": "2022-12-14T15:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.594050000000000000,
+        "TariffReturn": 0.54500
+    },
+    {
+        "Timestamp": "2022-12-14T16:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.643100000000000000,
+        "TariffReturn": 0.59000
+    },
+    {
+        "Timestamp": "2022-12-14T17:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.607130000000000000,
+        "TariffReturn": 0.55700
+    },
+    {
+        "Timestamp": "2022-12-14T18:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.567421300000000000,
+        "TariffReturn": 0.52057
+    },
+    {
+        "Timestamp": "2022-12-14T19:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.531811000000000000,
+        "TariffReturn": 0.48790
+    },
+    {
+        "Timestamp": "2022-12-14T20:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.432370300000000000,
+        "TariffReturn": 0.39667
+    },
+    {
+        "Timestamp": "2022-12-14T21:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.383374800000000000,
+        "TariffReturn": 0.35172
+    },
+    {
+        "Timestamp": "2022-12-14T22:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.348429400000000000,
+        "TariffReturn": 0.31966
+    }
+]
