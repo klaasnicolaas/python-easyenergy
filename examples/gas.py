@@ -1,7 +1,7 @@
 """Asynchronous Python client for the easyEnergy API."""
 
 import asyncio
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 
 from easyenergy import EasyEnergy
 
@@ -9,7 +9,7 @@ from easyenergy import EasyEnergy
 async def main() -> None:
     """Show example on fetching the gas prices from easyEnergy."""
     async with EasyEnergy() as client:
-        today = datetime.strptime("2022-12-14", "%Y-%m-%d")
+        today = date(2022, 12, 14)
 
         gas_today = await client.gas_prices(start_date=today, end_date=today)
         next_hour = gas_today.utcnow() + timedelta(hours=1)

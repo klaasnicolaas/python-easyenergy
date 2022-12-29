@@ -1,7 +1,7 @@
 """Asynchronous Python client for the easyEnergy API."""
 
 import asyncio
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 
 import pytz
 
@@ -12,8 +12,8 @@ async def main() -> None:
     """Show example on fetching the energy prices from easyEnergy."""
     async with EasyEnergy() as client:
         local = pytz.timezone("Europe/Amsterdam")
-        today = datetime.strptime("2022-12-14", "%Y-%m-%d")
-        tomorrow = datetime.strptime("2022-12-14", "%Y-%m-%d")
+        today = date(2022, 12, 29)
+        tomorrow = date(2022, 12, 29)
 
         # Select your test readings
         energy_reading: bool = True

@@ -68,14 +68,15 @@ The gas prices do not change per hour, but are fixed for 24 hours. Which means t
 ```python
 import asyncio
 
+from datetime import date
 from easyenergy import EasyEnergy
 
 
 async def main() -> None:
     """Show example on fetching the energy prices from easyEnergy."""
     async with EasyEnergy(incl_vat="true") as client:
-        start_date = datetime.strptime("2022-12-07", "%Y-%m-%d")
-        end_date = datetime.strptime("2022-12-07", "%Y-%m-%d")
+        start_date = date(2022, 12, 7)
+        end_date = date(2022, 12, 7)
 
         energy = await client.energy_prices(start_date, end_date)
         gas = await client.gas_prices(start_date, end_date)

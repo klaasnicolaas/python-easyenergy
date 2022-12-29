@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 import socket
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from importlib import metadata
 from typing import Any
 
@@ -19,6 +19,15 @@ from .exceptions import (
     EasyEnergyNoDataError,
 )
 from .models import Electricity, Gas
+
+
+def get_utcnow() -> datetime:
+    """Get the current UTC time.
+
+    Returns:
+        The current UTC time.
+    """
+    return datetime.now(timezone.utc)
 
 
 @dataclass
@@ -97,7 +106,7 @@ class EasyEnergy:
 
         return await response.json()
 
-    async def gas_prices(self, start_date: datetime, end_date: datetime) -> Gas:
+    async def gas_prices(self, start_date: date, end_date: date) -> Gas:
         """Get gas prices for a given period.
 
         Args:
@@ -110,8 +119,24 @@ class EasyEnergy:
         Raises:
             EasyEnergyNoDataError: No gas prices found for this period.
         """
-        start_date_utc: datetime = start_date - timedelta(hours=1)
-        end_date_utc: datetime = end_date.replace(hour=23, minute=00, second=00)
+        start_date_utc: datetime
+        end_date_utc: datetime
+        if get_utcnow().hour < 5:
+            # Set start_date to 05:00:00 prev day and the end_date to 05:00:00 UTC
+            start_date_utc = datetime(
+                start_date.year, start_date.month, start_date.day, 5, 0, 0
+            ) - timedelta(days=1)
+            end_date_utc = datetime(
+                end_date.year, end_date.month, end_date.day, 5, 0, 0
+            )
+        # Set start_date to 05:00:00 and the end_date to 05:00:00 UTC next day
+        start_date_utc = datetime(
+            start_date.year, start_date.month, start_date.day, 5, 0, 0
+        )
+        end_date_utc = datetime(
+            end_date.year, end_date.month, end_date.day, 5, 0, 0
+        ) + timedelta(days=1)
+
         data = await self._request(
             "getlebatariffs",
             params={
@@ -125,9 +150,7 @@ class EasyEnergy:
             raise EasyEnergyNoDataError("No gas prices found for this period.")
         return Gas.from_dict(data)
 
-    async def energy_prices(
-        self, start_date: datetime, end_date: datetime
-    ) -> Electricity:
+    async def energy_prices(self, start_date: date, end_date: date) -> Electricity:
         """Get energy prices for a given period.
 
         Args:
@@ -140,8 +163,13 @@ class EasyEnergy:
         Raises:
             EasyEnergyNoDataError: No energy prices found for this period.
         """
-        start_date_utc = start_date - timedelta(hours=1)
-        end_date_utc = end_date.replace(hour=23, minute=00, second=00)
+        # Set the start date to 23:00:00 previous day and the end date to 23:00:00 UTC
+        start_date_utc: datetime = datetime(
+            start_date.year, start_date.month, start_date.day, 0, 0, 0
+        ) - timedelta(hours=1)
+        end_date_utc: datetime = datetime(
+            end_date.year, end_date.month, end_date.day, 23, 0, 0
+        )
         data = await self._request(
             "getapxtariffs",
             params={
