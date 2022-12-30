@@ -21,15 +21,6 @@ from .exceptions import (
 from .models import Electricity, Gas
 
 
-def get_utcnow() -> datetime:
-    """Get the current UTC time.
-
-    Returns:
-        The current UTC time.
-    """
-    return datetime.now(timezone.utc)
-
-
 @dataclass
 class EasyEnergy:
     """Main class for handling data fetching from easyEnergy."""
@@ -121,7 +112,16 @@ class EasyEnergy:
         """
         start_date_utc: datetime
         end_date_utc: datetime
-        if get_utcnow().hour < 5:
+        utcnow: datetime = datetime.now(timezone.utc)
+        if utcnow.hour >= 5 and utcnow.hour <= 22:
+            # Set start_date to 05:00:00 and the end_date to 05:00:00 UTC next day
+            start_date_utc = datetime(
+                start_date.year, start_date.month, start_date.day, 5, 0, 0
+            )
+            end_date_utc = datetime(
+                end_date.year, end_date.month, end_date.day, 5, 0, 0
+            ) + timedelta(days=1)
+        else:
             # Set start_date to 05:00:00 prev day and the end_date to 05:00:00 UTC
             start_date_utc = datetime(
                 start_date.year, start_date.month, start_date.day, 5, 0, 0
@@ -129,13 +129,6 @@ class EasyEnergy:
             end_date_utc = datetime(
                 end_date.year, end_date.month, end_date.day, 5, 0, 0
             )
-        # Set start_date to 05:00:00 and the end_date to 05:00:00 UTC next day
-        start_date_utc = datetime(
-            start_date.year, start_date.month, start_date.day, 5, 0, 0
-        )
-        end_date_utc = datetime(
-            end_date.year, end_date.month, end_date.day, 5, 0, 0
-        ) + timedelta(days=1)
 
         data = await self._request(
             "getlebatariffs",
