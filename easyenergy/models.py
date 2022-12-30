@@ -18,7 +18,7 @@ def _timed_value(moment: datetime, prices: dict[datetime, float]) -> float | Non
     """
     value = None
     for timestamp, price in prices.items():
-        if timestamp <= moment < timestamp + timedelta(hours=1):
+        if timestamp <= moment < (timestamp + timedelta(hours=1)):
             value = round(price, 5)
     return value
 
@@ -52,7 +52,7 @@ class Electricity:
         Returns:
             The price for the current hour.
         """
-        return self.price_at_time(self.utcnow()) or None
+        return self.price_at_time(self.utcnow())
 
     @property
     def current_return_price(self) -> float | None:
@@ -61,7 +61,7 @@ class Electricity:
         Returns:
             The price for the current hour.
         """
-        return self.price_at_time(self.utcnow()) or None
+        return self.price_at_time(self.utcnow(), data_type="return")
 
     @property
     def extreme_usage_prices(self) -> tuple[float, float]:
@@ -212,9 +212,17 @@ class Electricity:
         Returns:
             The price at the specified time.
         """
+        # Set the correct data list
         if data_type == "return":
-            return _timed_value(moment, self.return_prices) or None
-        return _timed_value(moment, self.usage_prices) or None
+            data_list = self.return_prices
+        else:
+            data_list = self.usage_prices
+
+        # Get the price at the specified time
+        value = _timed_value(moment, data_list)
+        if value is not None or value == 0:
+            return value
+        return None
 
     @classmethod
     def from_dict(cls, data: list[dict[str, Any]]) -> Electricity:
@@ -255,7 +263,7 @@ class Gas:
         Returns:
             The current gas price.
         """
-        return self.price_at_time(self.utcnow()) or None
+        return self.price_at_time(self.utcnow())
 
     @property
     def extreme_prices(self) -> tuple[float, float]:
@@ -292,7 +300,10 @@ class Gas:
         Returns:
             The price at the specified time.
         """
-        return _timed_value(moment, self.prices) or None
+        value = _timed_value(moment, self.prices)
+        if value is not None or value == 0:
+            return value
+        return None
 
     @classmethod
     def from_dict(cls, data: list[dict[str, Any]]) -> Gas:
