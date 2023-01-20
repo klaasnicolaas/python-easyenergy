@@ -25,7 +25,9 @@ Asynchronous Python client for the easyEnergy API.
 
 ## About
 
-A python package with which you can retrieve the dynamic energy/gas prices from [easyEnergy][easyenergy].
+A python package with which you can retrieve the dynamic energy/gas prices from [easyEnergy][easyenergy]. Third parties who purchase their energy via easyEnergy (as far as is known):
+
+- [NieuweStroom](https://nieuwestroom.nl)
 
 ## Installation
 
