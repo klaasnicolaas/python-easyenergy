@@ -160,7 +160,7 @@ class Electricity:
         return round(current / self.extreme_return_prices[1] * 100, 2)
 
     @property
-    def timestamp_useage_prices(self) -> list[dict[str, float | datetime]]:
+    def timestamp_usage_prices(self) -> list[dict[str, float | datetime]]:
         """Return a dictionary with the prices for usage.
 
         Returns:

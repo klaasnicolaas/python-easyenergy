@@ -45,7 +45,7 @@ async def test_electricity_model_usage(aresponses: ResponsesMockServer) -> None:
             "2022-12-29 17:00", "%Y-%m-%d %H:%M"
         ).replace(tzinfo=timezone.utc)
         assert energy.pct_of_max_usage == 89.85
-        assert isinstance(energy.timestamp_useage_prices, list)
+        assert isinstance(energy.timestamp_usage_prices, list)
 
 
 @pytest.mark.asyncio
