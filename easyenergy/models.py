@@ -12,12 +12,12 @@ if TYPE_CHECKING:
 def _timed_value(moment: datetime, prices: dict[datetime, float]) -> float | None:
     """Return a function that returns a value at a specific time.
 
-    Args
+    Args:
     ----
         moment: The time to get the value for.
         prices: A dictionary with market prices.
 
-    Returns
+    Returns:
     -------
         The value at the specific time.
     """
@@ -34,12 +34,12 @@ def _get_pricetime(
 ) -> datetime:
     """Return the time of the price.
 
-    Args
+    Args:
     ----
         prices: A dictionary with market prices.
         func: A function to get the time.
 
-    Returns
+    Returns:
     -------
         The time of the price.
     """
@@ -217,9 +217,10 @@ class Electricity:
         """Return a list of dictionaries with the prices and timestamps.
 
         Args:
+        ----
             prices: A dictionary with the prices.
 
-        Returns
+        Returns:
         -------
             A list of dictionaries with the prices and timestamps.
         """
@@ -232,11 +233,12 @@ class Electricity:
         """Return the price at a specific time.
 
         Args:
+        ----
             moment: The time to get the price for.
             data_type: The type of data to get the price for.
                 Can be "usage" (default) or "return".
 
-        Returns
+        Returns:
         -------
             The price at the specified time.
         """
@@ -254,9 +256,10 @@ class Electricity:
         """Create an Electricity object from a dictionary.
 
         Args:
+        ----
             data: A dictionary with the data from the API.
 
-        Returns
+        Returns:
         -------
             An Electricity object.
         """
@@ -324,9 +327,10 @@ class Gas:
         """Return the price at a specific time.
 
         Args:
+        ----
             moment: The time to get the price for.
 
-        Returns
+        Returns:
         -------
             The price at the specified time.
         """
@@ -340,9 +344,10 @@ class Gas:
         """Create a Gas object from a dictionary.
 
         Args:
+        ----
             data: A dictionary with the data from the API.
 
-        Returns
+        Returns:
         -------
             A Gas object.
         """
