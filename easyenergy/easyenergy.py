@@ -40,17 +40,17 @@ class EasyEnergy:
     ) -> Any:
         """Handle a request to the API of easyEnergy.
 
-        Args
+        Args:
         ----
             uri: Request URI, without '/', for example, 'status'
             method: HTTP method to use, for example, 'GET'
             params: Extra options to improve or limit the response.
 
-        Returns
+        Returns:
         -------
             A Python dictionary (json) with the response from easyEnergy.
 
-        Raises
+        Raises:
         ------
             EasyEnergyConnectionError: An error occurred while
                 communicating with the API.
@@ -108,16 +108,16 @@ class EasyEnergy:
     async def gas_prices(self, start_date: date, end_date: date) -> Gas:
         """Get gas prices for a given period.
 
-        Args
+        Args:
         ----
             start_date: Start date of the period.
             end_date: End date of the period.
 
-        Returns
+        Returns:
         -------
             A Python dictionary with the response from easyEnergy.
 
-        Raises
+        Raises:
         ------
             EasyEnergyNoDataError: No gas prices found for this period.
         """
@@ -182,16 +182,16 @@ class EasyEnergy:
     async def energy_prices(self, start_date: date, end_date: date) -> Electricity:
         """Get energy prices for a given period.
 
-        Args
+        Args:
         ----
             start_date: Start date of the period.
             end_date: End date of the period.
 
-        Returns
+        Returns:
         -------
             A Python dictionary with the response from easyEnergy.
 
-        Raises
+        Raises:
         ------
             EasyEnergyNoDataError: No energy prices found for this period.
         """
