@@ -12,8 +12,8 @@ async def main() -> None:
     """Show example on fetching the energy prices from easyEnergy."""
     async with EasyEnergy() as client:
         local = pytz.timezone("Europe/Amsterdam")
-        today = date(2022, 12, 14)
-        tomorrow = date(2022, 12, 15)
+        today = date(2023, 3, 12)
+        tomorrow = date(2023, 3, 13)
 
         # Select your test readings
         switch_e_today: bool = True
