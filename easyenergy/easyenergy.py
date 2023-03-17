@@ -71,12 +71,12 @@ class EasyEnergy:
             result = await dns.query(API_HOST, "A")
         except DNSError as err:
             raise EasyEnergyConnectionError(
-                "Error while resolving EasyEnergy API IPv4 address"
+                "Error while resolving EasyEnergy API IPv4 address",
             ) from err
 
         if not result:
             raise EasyEnergyConnectionError(
-                "Could not resolve EasyEnergy IPv4 address"
+                "Could not resolve EasyEnergy IPv4 address",
             )
 
         url = URL.build(
