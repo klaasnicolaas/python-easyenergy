@@ -15,14 +15,13 @@ from aiohttp.client import ClientError, ClientSession
 from aiohttp.hdrs import METH_GET
 from yarl import URL
 
+from .const import API_HOST
 from .exceptions import (
     EasyEnergyConnectionError,
     EasyEnergyError,
     EasyEnergyNoDataError,
 )
 from .models import Electricity, Gas
-
-API_HOST: str = "mijn.easyenergy.com"
 
 @dataclass
 class EasyEnergy:
