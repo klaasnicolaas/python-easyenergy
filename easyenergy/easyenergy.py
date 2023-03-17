@@ -23,6 +23,7 @@ from .exceptions import (
 )
 from .models import Electricity, Gas
 
+
 @dataclass
 class EasyEnergy:
     """Main class for handling data fetching from easyEnergy."""
