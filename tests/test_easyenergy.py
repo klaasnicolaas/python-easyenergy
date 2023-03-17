@@ -4,6 +4,8 @@ import asyncio
 from unittest.mock import patch
 
 import pytest
+from aiodns import DNSResolver
+from aiodns.error import DNSError
 from aiohttp import ClientError, ClientResponse, ClientSession
 from aresponses import Response, ResponsesMockServer
 
@@ -91,5 +93,17 @@ async def test_client_error() -> None:
             session,
             "request",
             side_effect=ClientError,
+        ), pytest.raises(EasyEnergyConnectionError):
+            assert await client._request("test")
+
+
+async def test_dns_error() -> None:
+    """Test request DNS error is handled correctly."""
+    async with ClientSession() as session:
+        client = EasyEnergy(session=session)
+        with patch.object(
+            DNSResolver,
+            "query",
+            side_effect=DNSError,
         ), pytest.raises(EasyEnergyConnectionError):
             assert await client._request("test")
