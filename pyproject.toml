@@ -27,16 +27,16 @@ packages = [
 
 [tool.poetry.dependencies]
 aiohttp = ">=3.0.0"
-aiodns = ">=3.0.0"
 python = "^3.9"
 yarl = ">=1.6.0"
+aiodns = "^3.0.0"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/klaasnicolaas/python-easyenergy/issues"
 Changelog = "https://github.com/klaasnicolaas/python-easyenergy/releases"
 
 [tool.poetry.group.dev.dependencies]
-ruff = ">=0.0.243,<0.0.257"
+ruff = ">=0.0.243,<0.0.258"
 aresponses = "^2.1.6"
 black = "^22.12"
 blacken-docs = "^1.13.0"
