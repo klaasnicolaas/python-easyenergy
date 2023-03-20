@@ -9,10 +9,13 @@ from importlib import metadata
 from typing import Any, cast
 
 import async_timeout
+from aiodns import DNSResolver
+from aiodns.error import DNSError
 from aiohttp.client import ClientError, ClientSession
 from aiohttp.hdrs import METH_GET
 from yarl import URL
 
+from .const import API_HOST
 from .exceptions import (
     EasyEnergyConnectionError,
     EasyEnergyError,
@@ -58,15 +61,36 @@ class EasyEnergy:
                 the API.
         """
         version = metadata.version(__package__)
+
+        # EasyEnergy is experiencing IPv6 connection issues.
+        # DNS returns an AAAA record with an IPv6 address, but
+        # there doesn't appear to be something listening at that.
+        # Workaround is to resolve the IPv4 address and use that.
+        dns = DNSResolver()
+        try:
+            result = await dns.query(API_HOST, "A")
+        except DNSError as err:
+            msg = "Error while resolving EasyEnergy API IPv4 address"
+            raise EasyEnergyConnectionError(
+                msg,
+            ) from err
+
+        if not result:
+            msg = "Could not resolve EasyEnergy IPv4 address"
+            raise EasyEnergyConnectionError(
+                msg,
+            )
+
         url = URL.build(
             scheme="https",
-            host="mijn.easyenergy.com",
+            host=result[0].host,
             path="/nl/api/tariff/",
         ).join(URL(uri))
 
         headers = {
             "Accept": "application/json, text/plain",
             "User-Agent": f"PythonEasyEnergy/{version}",
+            "Host": API_HOST,
         }
 
         if self.session is None:
