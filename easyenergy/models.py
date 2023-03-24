@@ -202,6 +202,30 @@ class Electricity:
         """
         return self.generate_timestamp_list(self.return_prices)
 
+    @property
+    def hours_in_price_pctile_usage(self) -> int:
+        """Return the number of hours with the current price or better for usage.
+
+        Returns
+        -------
+            The number of hours with the current price or better for usage.
+        """
+
+        current = self.current_usage_price or 0
+        return sum([price <= current for price in self.usage_prices.values()])
+
+    @property
+    def hours_in_price_pctile_return(self) -> int:
+        """Return the number of hours with the current price or better for return.
+
+        Returns
+        -------
+            The number of hours with the current price or better for return.
+        """
+
+        current = self.current_return_price or 0
+        return sum([price >= current for price in self.return_prices.values()])
+
     def utcnow(self) -> datetime:
         """Return the current timestamp in the UTC timezone.
 
