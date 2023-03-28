@@ -1,5 +1,11 @@
 [
     {
+        "Timestamp": "2022-12-13T22:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.464502200000000000,
+        "TariffReturn": 1.464502200000000000
+    },
+    {
         "Timestamp": "2022-12-13T23:00:00+00:00",
         "SupplierId": 0,
         "TariffUsage": 1.464502200000000000,
@@ -133,12 +139,6 @@
     },
     {
         "Timestamp": "2022-12-14T21:00:00+00:00",
-        "SupplierId": 0,
-        "TariffUsage": 1.485343000000000000,
-        "TariffReturn": 1.485343000000000000
-    },
-    {
-        "Timestamp": "2022-12-14T22:00:00+00:00",
         "SupplierId": 0,
         "TariffUsage": 1.485343000000000000,
         "TariffReturn": 1.485343000000000000

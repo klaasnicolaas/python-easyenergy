@@ -34,7 +34,7 @@ async def test_electricity_model_usage(aresponses: ResponsesMockServer) -> None:
         assert isinstance(energy, Electricity)
         assert energy.extreme_usage_prices[1] == 0.13345
         assert energy.extreme_usage_prices[0] == -0.00277
-        assert energy.average_usage_price == 0.07133
+        assert energy.average_usage_price == 0.07064
         assert energy.current_usage_price == 0.1199
         # The next hour price
         next_hour = datetime(2022, 12, 29, 15, 0, tzinfo=timezone.utc)
@@ -75,7 +75,7 @@ async def test_electricity_model_return(aresponses: ResponsesMockServer) -> None
         assert isinstance(energy, Electricity)
         assert energy.extreme_return_prices[1] == 0.12243
         assert energy.extreme_return_prices[0] == -0.00254
-        assert energy.average_return_price == 0.06544
+        assert energy.average_return_price == 0.06481
         assert energy.current_return_price == 0.11
         # The next hour price
         next_hour = datetime(2022, 12, 29, 15, 0, tzinfo=timezone.utc)
@@ -90,6 +90,31 @@ async def test_electricity_model_return(aresponses: ResponsesMockServer) -> None
         ).replace(tzinfo=timezone.utc)
         assert energy.pct_of_max_return == 89.85
         assert isinstance(energy.timestamp_return_prices, list)
+
+
+@pytest.mark.freeze_time("2022-12-29 00:30:00+02:00")
+async def test_electricity_midnight(aresponses: ResponsesMockServer) -> None:
+    """Test the electricity model between 00:00 and 01:00 with in CEST."""
+    aresponses.add(
+        "mijn.easyenergy.com",
+        "/nl/api/tariff/getapxtariffs",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text=load_fixtures("energy.json"),
+        ),
+    )
+    async with ClientSession() as session:
+        today = date(2022, 12, 29)
+        client = EasyEnergy(session=session)
+        energy: Electricity = await client.energy_prices(
+            start_date=today,
+            end_date=today,
+        )
+        assert energy is not None
+        assert energy.current_usage_price == 0.02341
+        assert energy.current_return_price == 0.02148
 
 
 async def test_electricity_none_data(aresponses: ResponsesMockServer) -> None:
@@ -114,7 +139,7 @@ async def test_electricity_none_data(aresponses: ResponsesMockServer) -> None:
         assert energy is not None
         assert isinstance(energy, Electricity)
         assert energy.current_return_price is None
-        assert energy.average_return_price == 0.06544
+        assert energy.average_return_price == 0.06481
 
 
 async def test_no_electricity_data(aresponses: ResponsesMockServer) -> None:
@@ -157,7 +182,7 @@ async def test_gas_model(aresponses: ResponsesMockServer) -> None:
         assert isinstance(gas, Gas)
         assert gas.extreme_prices[1] == 1.48534
         assert gas.extreme_prices[0] == 1.4645
-        assert gas.average_price == 1.48013
+        assert gas.average_price == 1.47926
         assert gas.current_price == 1.48534
 
 
@@ -182,7 +207,7 @@ async def test_gas_morning_model(aresponses: ResponsesMockServer) -> None:
         assert isinstance(gas, Gas)
         assert gas.extreme_prices[1] == 1.48534
         assert gas.extreme_prices[0] == 1.4645
-        assert gas.average_price == 1.48013
+        assert gas.average_price == 1.47926
         assert gas.current_price == 1.4645
 
 
@@ -205,7 +230,7 @@ async def test_gas_none_data(aresponses: ResponsesMockServer) -> None:
         assert gas is not None
         assert isinstance(gas, Gas)
         assert gas.current_price is None
-        assert gas.average_price == 1.48013
+        assert gas.average_price == 1.47926
 
 
 async def test_no_gas_data(aresponses: ResponsesMockServer) -> None:
