@@ -203,7 +203,7 @@ class Electricity:
         return self.generate_timestamp_list(self.return_prices)
 
     @property
-    def hours_priced_equal_or_better_usage(self) -> int:
+    def hours_priced_equal_or_lower_usage(self) -> int:
         """Return the number of hours with the current price or better for usage.
 
         Returns
@@ -214,7 +214,7 @@ class Electricity:
         return sum(price <= current for price in self.usage_prices.values())
 
     @property
-    def hours_priced_equal_or_better_return(self) -> int:
+    def hours_priced_equal_or_higher_return(self) -> int:
         """Return the number of hours with the current price or better for return.
 
         Returns
