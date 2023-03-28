@@ -9,7 +9,7 @@ from easyenergy import EasyEnergy
 async def main() -> None:
     """Show example on fetching the gas prices from easyEnergy."""
     async with EasyEnergy() as client:
-        today = date(2022, 12, 14)
+        today = date(2023, 3, 28)
 
         gas_today = await client.gas_prices(start_date=today, end_date=today)
         next_hour = gas_today.utcnow() + timedelta(hours=1)

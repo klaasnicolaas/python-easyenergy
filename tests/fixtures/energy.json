@@ -1,5 +1,11 @@
 [
     {
+        "Timestamp": "2022-12-28T22:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 0.023413200000000000,
+        "TariffReturn": 0.02148
+    },
+    {
         "Timestamp": "2022-12-28T23:00:00+00:00",
         "SupplierId": 0,
         "TariffUsage": -0.000882900000000000,
