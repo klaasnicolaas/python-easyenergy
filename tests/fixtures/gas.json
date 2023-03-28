@@ -142,5 +142,11 @@
         "SupplierId": 0,
         "TariffUsage": 1.485343000000000000,
         "TariffReturn": 1.485343000000000000
+    },
+    {
+        "Timestamp": "2022-12-14T22:00:00+00:00",
+        "SupplierId": 0,
+        "TariffUsage": 1.485343000000000000,
+        "TariffReturn": 1.485343000000000000
     }
 ]
