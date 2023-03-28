@@ -23,7 +23,8 @@ def _timed_value(moment: datetime, prices: dict[datetime, float]) -> float | Non
     """
     value = None
     for timestamp, price in prices.items():
-        if timestamp <= moment < (timestamp + timedelta(hours=1)):
+        future_dt = timestamp + timedelta(hours=1)
+        if timestamp <= moment < future_dt:
             value = round(price, 5)
     return value
 

@@ -12,8 +12,8 @@ async def main() -> None:
     """Show example on fetching the energy prices from easyEnergy."""
     async with EasyEnergy() as client:
         local = pytz.timezone("Europe/Amsterdam")
-        today = date(2023, 3, 12)
-        tomorrow = date(2023, 3, 13)
+        today = date(2023, 3, 28)
+        tomorrow = date(2023, 3, 29)
 
         # Select your test readings
         switch_e_today: bool = True
@@ -21,7 +21,7 @@ async def main() -> None:
 
         if switch_e_today:
             energy_today = await client.energy_prices(start_date=today, end_date=today)
-            next_hour = energy_today.utcnow() + timedelta(hours=1)
+            utc_next_hour = energy_today.utcnow() + timedelta(hours=1)
             print("--- ENERGY TODAY ---")
             print(f"Extremas usage price: {energy_today.extreme_usage_prices}")
             print(f"Extremas return price: {energy_today.extreme_return_prices}")
@@ -37,7 +37,7 @@ async def main() -> None:
             print()
             print(f"Current usage price: {energy_today.current_usage_price}")
             print(f"Current return price: {energy_today.current_return_price}")
-            print(f"Next hourprice: {energy_today.price_at_time(next_hour)}")
+            print(f"Next hourprice: {energy_today.price_at_time(utc_next_hour)}")
 
         if switch_e_tomorrow:
             energy_tomorrow = await client.energy_prices(tomorrow, tomorrow)
