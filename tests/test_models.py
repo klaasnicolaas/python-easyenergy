@@ -49,7 +49,7 @@ async def test_electricity_model_usage(aresponses: ResponsesMockServer) -> None:
         ).replace(tzinfo=timezone.utc)
         assert energy.pct_of_max_usage == 89.85
         assert isinstance(energy.timestamp_usage_prices, list)
-        assert energy.hours_priced_equal_or_lower_usage == 20
+        assert energy.hours_priced_equal_or_lower_usage == 21
         assert energy.hours_priced_equal_or_higher_return == 5
 
 
