@@ -36,7 +36,7 @@ aiodns = "^3.0.0"
 Changelog = "https://github.com/klaasnicolaas/python-easyenergy/releases"
 
 [tool.poetry.group.dev.dependencies]
-ruff = ">=0.0.243,<0.0.261"
+ruff = ">=0.0.243,<0.0.262"
 aresponses = "^2.1.6"
 black = "^22.12"
 blacken-docs = "^1.13.0"
