@@ -30,6 +30,7 @@ async def main() -> None:
             print(f"Percentage max - Usage: {energy_today.pct_of_max_usage}%")
             print(f"Percentage max - Return: {energy_today.pct_of_max_return}%")
             print()
+
             highest_time_usage = energy_today.highest_usage_price_time.astimezone(local)
             print(f"Highest price time - Usage: {highest_time_usage}")
             lowest_time_usage = energy_today.lowest_usage_price_time.astimezone(local)
@@ -38,6 +39,11 @@ async def main() -> None:
             print(f"Current usage price: {energy_today.current_usage_price}")
             print(f"Current return price: {energy_today.current_return_price}")
             print(f"Next hourprice: {energy_today.price_at_time(utc_next_hour)}")
+
+            lower_hours: int = energy_today.hours_priced_equal_or_lower_usage
+            highest_hours: int = energy_today.hours_priced_equal_or_higher_return
+            print(f"Lower hours (usage): {lower_hours}")
+            print(f"Higher hours (return): {highest_hours}")
 
         if switch_e_tomorrow:
             energy_tomorrow = await client.energy_prices(tomorrow, tomorrow)
