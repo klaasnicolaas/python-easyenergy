@@ -6,7 +6,7 @@ import socket
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from importlib import metadata
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import async_timeout
 from aiodns import DNSResolver
@@ -22,6 +22,9 @@ from .exceptions import (
     EasyEnergyNoDataError,
 )
 from .models import Electricity, Gas
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
 
 @dataclass
@@ -259,7 +262,7 @@ class EasyEnergy:
         if self.session and self._close_session:
             await self.session.close()
 
-    async def __aenter__(self) -> EasyEnergy:
+    async def __aenter__(self) -> Self:
         """Async enter.
 
         Returns
@@ -268,7 +271,7 @@ class EasyEnergy:
         """
         return self
 
-    async def __aexit__(self, *_exc_info: Any) -> None:
+    async def __aexit__(self, *_exc_info: object) -> None:
         """Async exit.
 
         Args:
