@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 class EasyEnergy:
     """Main class for handling data fetching from easyEnergy."""
 
-    incl_vat: str = "true"
+    incl_vat: bool = True
     request_timeout: float = 10.0
     session: ClientSession | None = None
 
@@ -198,7 +198,7 @@ class EasyEnergy:
             params={
                 "startTimestamp": utc_start_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
                 "endTimestamp": utc_end_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                "includeVat": self.incl_vat.lower(),
+                "includeVat": "true" if self.incl_vat else "false",
             },
         )
 
@@ -248,7 +248,7 @@ class EasyEnergy:
             params={
                 "startTimestamp": utc_start_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
                 "endTimestamp": utc_end_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                "includeVat": self.incl_vat.lower(),
+                "includeVat": "true" if self.incl_vat else "false",
             },
         )
 

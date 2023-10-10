@@ -76,7 +76,7 @@ from easyenergy import EasyEnergy
 
 async def main() -> None:
     """Show example on fetching the energy prices from easyEnergy."""
-    async with EasyEnergy(incl_vat="true") as client:
+    async with EasyEnergy(incl_vat=True) as client:
         start_date = date(2022, 12, 7)
         end_date = date(2022, 12, 7)
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
 | Parameter | value Type | Description |
 | :-------- | :--------- | :---------- |
-| `incl_vat` | str (default: **true**) | Include or exclude VAT |
+| `incl_vat` | bool (default: **True**) | Include or exclude VAT |
 
 ### Function Parameters
 
