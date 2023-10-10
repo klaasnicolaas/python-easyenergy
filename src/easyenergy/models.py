@@ -204,24 +204,24 @@ class Electricity:
 
     @property
     def hours_priced_equal_or_lower_usage(self) -> int:
-        """Return the number of hours with the current price or better for usage.
+        """Return the number of hours with the current price or lower for usage.
 
         Returns
         -------
-            The number of hours with the current price or better for usage.
+            The number of hours with the current price or lower for usage.
         """
-        current = self.current_usage_price or 0
+        current: float = self.current_usage_price or 0
         return sum(price <= current for price in self.usage_prices.values())
 
     @property
     def hours_priced_equal_or_higher_return(self) -> int:
-        """Return the number of hours with the current price or better for return.
+        """Return the number of hours with the current price or higher for return.
 
         Returns
         -------
-            The number of hours with the current price or better for return.
+            The number of hours with the current price or higher for return.
         """
-        current = self.current_return_price or 0
+        current: float = self.current_return_price or 0
         return sum(price >= current for price in self.return_prices.values())
 
     def utcnow(self) -> datetime:
