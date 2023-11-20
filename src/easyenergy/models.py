@@ -3,10 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
+from typing import Any, Callable
 
 
 def _timed_value(moment: datetime, prices: dict[datetime, float]) -> float | None:
