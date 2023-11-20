@@ -207,7 +207,7 @@ SOFTWARE.
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
 [maintainability-shield]: https://api.codeclimate.com/v1/badges/8628757a4bde52dbfaf6/maintainability
 [maintainability-url]: https://codeclimate.com/github/klaasnicolaas/python-easyenergy/maintainability
-[project-stage-shield]: https://img.shields.io/badge/project%20stage-experimental-yellow.svg
+[project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-brightgreen.svg
 [pypi]: https://pypi.org/project/easyenergy/
 [python-versions-shield]: https://img.shields.io/pypi/pyversions/easyenergy
 [typing-shield]: https://github.com/klaasnicolaas/python-easyenergy/actions/workflows/typing.yaml/badge.svg
