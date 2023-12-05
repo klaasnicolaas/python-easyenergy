@@ -3,13 +3,13 @@
 import asyncio
 from datetime import date, timedelta
 
-from easyenergy import EasyEnergy
+from easyenergy import EasyEnergy, VatOption
 
 
 async def main() -> None:
     """Show example on fetching the gas prices from easyEnergy."""
-    async with EasyEnergy() as client:
-        today = date(2023, 3, 28)
+    async with EasyEnergy(vat=VatOption.INCLUDE) as client:
+        today = date(2023, 12, 5)
 
         gas_today = await client.gas_prices(start_date=today, end_date=today)
         next_hour = gas_today.utcnow() + timedelta(hours=1)

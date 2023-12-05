@@ -5,15 +5,15 @@ from datetime import date, timedelta
 
 import pytz
 
-from easyenergy import EasyEnergy
+from easyenergy import EasyEnergy, VatOption
 
 
 async def main() -> None:
     """Show example on fetching the energy prices from easyEnergy."""
-    async with EasyEnergy(incl_vat=True) as client:
+    async with EasyEnergy(vat=VatOption.INCLUDE) as client:
         local = pytz.timezone("Europe/Amsterdam")
-        today = date(2023, 10, 10)
-        tomorrow = date(2023, 10, 11)
+        today = date(2023, 12, 5)
+        tomorrow = date(2023, 12, 6)
 
         # Select your test readings
         switch_e_today: bool = True
