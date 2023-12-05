@@ -71,12 +71,12 @@ The gas prices do not change per hour, but are fixed for 24 hours. Which means t
 import asyncio
 
 from datetime import date
-from easyenergy import EasyEnergy
+from easyenergy import EasyEnergy, VatOption
 
 
 async def main() -> None:
     """Show example on fetching the energy prices from easyEnergy."""
-    async with EasyEnergy(incl_vat=True) as client:
+    async with EasyEnergy(vat=VatOption.INCLUDE) as client:
         start_date = date(2022, 12, 7)
         end_date = date(2022, 12, 7)
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
 | Parameter | value Type | Description |
 | :-------- | :--------- | :---------- |
-| `incl_vat` | bool (default: **True**) | Include or exclude VAT |
+| `vat` | enum (default: **VatOption.INCLUDE**) | Include or exclude VAT on class level |
 
 ### Function Parameters
 
@@ -100,6 +100,7 @@ if __name__ == "__main__":
 | :-------- | :--------- | :---------- |
 | `start_date` | datetime | The start date of the selected period |
 | `end_date` | datetime | The end date of the selected period |
+| `vat` | enum (default: class value) | Include or exclude VAT (**VatOption.INCLUDE** or **VatOption.EXCLUDE**) |
 
 ## Contributing
 

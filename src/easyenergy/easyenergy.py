@@ -6,7 +6,7 @@ import socket
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from importlib import metadata
-from typing import TYPE_CHECKING, Any, cast
+from typing import Any, Self, cast
 
 from aiodns import DNSResolver
 from aiodns.error import DNSError
@@ -14,7 +14,7 @@ from aiohttp.client import ClientError, ClientSession
 from aiohttp.hdrs import METH_GET
 from yarl import URL
 
-from .const import API_HOST
+from .const import API_HOST, VatOption
 from .exceptions import (
     EasyEnergyConnectionError,
     EasyEnergyError,
@@ -22,15 +22,12 @@ from .exceptions import (
 )
 from .models import Electricity, Gas
 
-if TYPE_CHECKING:
-    from typing_extensions import Self
-
 
 @dataclass
 class EasyEnergy:
     """Main class for handling data fetching from easyEnergy."""
 
-    incl_vat: bool = True
+    vat: VatOption = VatOption.INCLUDE
     request_timeout: float = 10.0
     session: ClientSession | None = None
 
@@ -131,13 +128,19 @@ class EasyEnergy:
 
         return cast(dict[str, Any], await response.json())
 
-    async def gas_prices(self, start_date: date, end_date: date) -> Gas:
+    async def gas_prices(
+        self,
+        start_date: date,
+        end_date: date,
+        vat: VatOption | None = None,
+    ) -> Gas:
         """Get gas prices for a given period.
 
         Args:
         ----
             start_date: Start date of the period.
             end_date: End date of the period.
+            vat: Include or exclude VAT from the prices.
 
         Returns:
         -------
@@ -197,7 +200,7 @@ class EasyEnergy:
             params={
                 "startTimestamp": utc_start_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
                 "endTimestamp": utc_end_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                "includeVat": "true" if self.incl_vat else "false",
+                "includeVat": vat.value if vat is not None else self.vat.value,
             },
         )
 
@@ -206,13 +209,19 @@ class EasyEnergy:
             raise EasyEnergyNoDataError(msg)
         return Gas.from_dict(data)
 
-    async def energy_prices(self, start_date: date, end_date: date) -> Electricity:
+    async def energy_prices(
+        self,
+        start_date: date,
+        end_date: date,
+        vat: VatOption | None = None,
+    ) -> Electricity:
         """Get energy prices for a given period.
 
         Args:
         ----
             start_date: Start date of the period.
             end_date: End date of the period.
+            vat: Include or exclude VAT from the prices.
 
         Returns:
         -------
@@ -247,7 +256,7 @@ class EasyEnergy:
             params={
                 "startTimestamp": utc_start_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
                 "endTimestamp": utc_end_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                "includeVat": "true" if self.incl_vat else "false",
+                "includeVat": vat.value if vat is not None else self.vat.value,
             },
         )
 
