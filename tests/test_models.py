@@ -5,7 +5,7 @@ import pytest
 from aiohttp import ClientSession
 from aresponses import ResponsesMockServer
 
-from easyenergy import EasyEnergy, EasyEnergyNoDataError, Electricity, Gas
+from easyenergy import EasyEnergy, EasyEnergyNoDataError, Electricity, Gas, VatOption
 
 from . import load_fixtures
 
@@ -29,6 +29,7 @@ async def test_electricity_model_usage(aresponses: ResponsesMockServer) -> None:
         energy: Electricity = await client.energy_prices(
             start_date=today,
             end_date=today,
+            vat=VatOption.INCLUDE,
         )
         assert energy is not None
         assert isinstance(energy, Electricity)
@@ -72,6 +73,7 @@ async def test_electricity_model_return(aresponses: ResponsesMockServer) -> None
         energy: Electricity = await client.energy_prices(
             start_date=today,
             end_date=today,
+            vat=VatOption.INCLUDE,
         )
         assert energy is not None
         assert isinstance(energy, Electricity)
@@ -179,7 +181,11 @@ async def test_gas_model(aresponses: ResponsesMockServer) -> None:
     async with ClientSession() as session:
         today = date(2022, 12, 14)
         client = EasyEnergy(session=session)
-        gas: Gas = await client.gas_prices(start_date=today, end_date=today)
+        gas: Gas = await client.gas_prices(
+            start_date=today,
+            end_date=today,
+            vat=VatOption.INCLUDE,
+        )
         assert gas is not None
         assert isinstance(gas, Gas)
         assert gas.extreme_prices[1] == 1.48534
@@ -204,7 +210,11 @@ async def test_gas_morning_model(aresponses: ResponsesMockServer) -> None:
     async with ClientSession() as session:
         today = date(2022, 12, 14)
         client = EasyEnergy(session=session)
-        gas: Gas = await client.gas_prices(start_date=today, end_date=today)
+        gas: Gas = await client.gas_prices(
+            start_date=today,
+            end_date=today,
+            vat=VatOption.INCLUDE,
+        )
         assert gas is not None
         assert isinstance(gas, Gas)
         assert gas.extreme_prices[1] == 1.48534

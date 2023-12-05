@@ -1,5 +1,6 @@
 """Asynchronous Python client for the easyEnergy API."""
 
+from .const import VatOption
 from .easyenergy import EasyEnergy
 from .exceptions import (
     EasyEnergyConnectionError,
@@ -9,10 +10,11 @@ from .exceptions import (
 from .models import Electricity, Gas
 
 __all__ = [
-    "Gas",
-    "Electricity",
     "EasyEnergy",
+    "EasyEnergyConnectionError",
     "EasyEnergyError",
     "EasyEnergyNoDataError",
-    "EasyEnergyConnectionError",
+    "Electricity",
+    "Gas",
+    "VatOption",
 ]
