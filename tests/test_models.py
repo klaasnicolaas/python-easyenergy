@@ -192,6 +192,7 @@ async def test_gas_model(aresponses: ResponsesMockServer) -> None:
         assert gas.extreme_prices[0] == 1.4645
         assert gas.average_price == 1.47951
         assert gas.current_price == 1.48534
+        assert isinstance(gas.timestamp_prices, list)
 
 
 @pytest.mark.freeze_time("2022-12-14 04:00:00+01:00")
