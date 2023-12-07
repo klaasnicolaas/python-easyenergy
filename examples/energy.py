@@ -22,6 +22,7 @@ async def main() -> None:
         if switch_e_today:
             energy_today = await client.energy_prices(start_date=today, end_date=today)
             utc_next_hour = energy_today.utcnow() + timedelta(hours=1)
+
             print("--- ENERGY TODAY ---")
             print(f"Extremas usage price: {energy_today.extreme_usage_prices}")
             print(f"Extremas return price: {energy_today.extreme_return_prices}")
