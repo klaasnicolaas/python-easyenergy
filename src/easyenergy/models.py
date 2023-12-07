@@ -44,6 +44,25 @@ def _get_pricetime(
     return func(prices, key=prices.get)  # type: ignore[call-arg]
 
 
+def _generate_timestamp_list(
+    prices: dict[datetime, float],
+) -> list[dict[str, float | datetime]]:
+    """Return a list of dictionaries with the prices and timestamps.
+
+    Args:
+    ----
+        prices: A dictionary with the prices.
+
+    Returns:
+    -------
+        A list of dictionaries with the prices and timestamps.
+    """
+    return [
+        {"timestamp": timestamp, "price": round(price, 5)}
+        for timestamp, price in prices.items()
+    ]
+
+
 @dataclass
 class Electricity:
     """Object representing electricity data."""
@@ -187,7 +206,7 @@ class Electricity:
         -------
             A dictionary with the prices for usage.
         """
-        return self.generate_timestamp_list(self.usage_prices)
+        return _generate_timestamp_list(self.usage_prices)
 
     @property
     def timestamp_return_prices(self) -> list[dict[str, float | datetime]]:
@@ -197,7 +216,7 @@ class Electricity:
         -------
             A dictionary with the prices for return.
         """
-        return self.generate_timestamp_list(self.return_prices)
+        return _generate_timestamp_list(self.return_prices)
 
     @property
     def hours_priced_equal_or_lower_usage(self) -> int:
@@ -229,25 +248,6 @@ class Electricity:
             The current timestamp in the UTC timezone.
         """
         return datetime.now(timezone.utc)
-
-    def generate_timestamp_list(
-        self,
-        prices: dict[datetime, float],
-    ) -> list[dict[str, float | datetime]]:
-        """Return a list of dictionaries with the prices and timestamps.
-
-        Args:
-        ----
-            prices: A dictionary with the prices.
-
-        Returns:
-        -------
-            A list of dictionaries with the prices and timestamps.
-        """
-        return [
-            {"timestamp": timestamp, "price": round(price, 5)}
-            for timestamp, price in prices.items()
-        ]
 
     def price_at_time(self, moment: datetime, data_type: str = "usage") -> float | None:
         """Return the price at a specific time.
@@ -323,6 +323,16 @@ class Gas:
             The minimum and maximum price for gas.
         """
         return round(min(self.prices.values()), 5), round(max(self.prices.values()), 5)
+
+    @property
+    def timestamp_prices(self) -> list[dict[str, float | datetime]]:
+        """Return a dictionary with the prices for return.
+
+        Returns
+        -------
+            A dictionary with the prices for return.
+        """
+        return _generate_timestamp_list(self.prices)
 
     @property
     def average_price(self) -> float:
