@@ -58,6 +58,7 @@ class EasyEnergy:
                 communicating with the API.
             EasyEnergyError: Received an unexpected response from
                 the API.
+
         """
         version = metadata.version(__package__)
 
@@ -108,14 +109,10 @@ class EasyEnergy:
                 response.raise_for_status()
         except asyncio.TimeoutError as exception:
             msg = "Timeout occurred while connecting to the API."
-            raise EasyEnergyConnectionError(
-                msg,
-            ) from exception
+            raise EasyEnergyConnectionError(msg) from exception
         except (ClientError, socket.gaierror) as exception:
             msg = "Error occurred while communicating with the API."
-            raise EasyEnergyConnectionError(
-                msg,
-            ) from exception
+            raise EasyEnergyConnectionError(msg) from exception
 
         content_type = response.headers.get("Content-Type", "")
         if "application/json" not in content_type:
@@ -149,6 +146,7 @@ class EasyEnergy:
         Raises:
         ------
             EasyEnergyNoDataError: No gas prices found for this period.
+
         """
         local_tz = datetime.now(timezone.utc).astimezone().tzinfo
         now: datetime = datetime.now(tz=local_tz)
@@ -230,6 +228,7 @@ class EasyEnergy:
         Raises:
         ------
             EasyEnergyNoDataError: No energy prices found for this period.
+
         """
         local_tz = datetime.now(timezone.utc).astimezone().tzinfo
         # Set start_date to 00:00:00 and the end_date to 00:00:00 and convert to UTC
@@ -276,6 +275,7 @@ class EasyEnergy:
         Returns
         -------
             The EasyEnergy object.
+
         """
         return self
 
@@ -285,5 +285,6 @@ class EasyEnergy:
         Args:
         ----
             _exc_info: Exec type.
+
         """
         await self.close()
