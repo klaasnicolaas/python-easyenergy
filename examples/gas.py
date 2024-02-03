@@ -9,7 +9,7 @@ from easyenergy import EasyEnergy, VatOption
 async def main() -> None:
     """Show example on fetching the gas prices from easyEnergy."""
     async with EasyEnergy(vat=VatOption.INCLUDE) as client:
-        today = date(2023, 12, 5)
+        today = date(2024, 1, 30)
 
         gas_today = await client.gas_prices(start_date=today, end_date=today)
         next_hour = gas_today.utcnow() + timedelta(hours=1)

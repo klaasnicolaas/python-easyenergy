@@ -100,7 +100,7 @@ class EasyEnergy:
                     url,
                     params=params,
                     headers=headers,
-                    ssl=True,
+                    ssl=False,
                 )
                 response.raise_for_status()
         except asyncio.TimeoutError as exception:

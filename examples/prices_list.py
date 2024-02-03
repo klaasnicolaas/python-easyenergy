@@ -9,7 +9,7 @@ from easyenergy import EasyEnergy, VatOption
 async def main() -> None:
     """Show example on fetching the timestamp lists from easyEnergy."""
     async with EasyEnergy(vat=VatOption.INCLUDE) as client:
-        today = date(2023, 12, 5)
+        today = date(2024, 1, 30)
         energy = await client.energy_prices(start_date=today, end_date=today)
         gas = await client.gas_prices(start_date=today, end_date=today)
 
