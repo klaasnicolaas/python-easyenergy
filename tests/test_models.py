@@ -1,5 +1,5 @@
 """Test the models."""
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 
 import pytest
 from aiohttp import ClientSession
@@ -38,16 +38,16 @@ async def test_electricity_model_usage(aresponses: ResponsesMockServer) -> None:
         assert energy.average_usage_price == 0.06941
         assert energy.current_usage_price == 0.1199
         # The next hour price
-        next_hour = datetime(2022, 12, 29, 15, 0, tzinfo=timezone.utc)
+        next_hour = datetime(2022, 12, 29, 15, 0, tzinfo=UTC)
         assert energy.price_at_time(next_hour) == 0.11979
         assert energy.lowest_usage_price_time == datetime.strptime(
             "2022-12-29 02:00",
             "%Y-%m-%d %H:%M",
-        ).replace(tzinfo=timezone.utc)
+        ).replace(tzinfo=UTC)
         assert energy.highest_usage_price_time == datetime.strptime(
             "2022-12-29 17:00",
             "%Y-%m-%d %H:%M",
-        ).replace(tzinfo=timezone.utc)
+        ).replace(tzinfo=UTC)
         assert energy.pct_of_max_usage == 89.85
         assert isinstance(energy.timestamp_usage_prices, list)
         assert energy.hours_priced_equal_or_lower_usage == 21
@@ -82,16 +82,16 @@ async def test_electricity_model_return(aresponses: ResponsesMockServer) -> None
         assert energy.average_return_price == 0.06368
         assert energy.current_return_price == 0.11
         # The next hour price
-        next_hour = datetime(2022, 12, 29, 15, 0, tzinfo=timezone.utc)
+        next_hour = datetime(2022, 12, 29, 15, 0, tzinfo=UTC)
         assert energy.price_at_time(next_hour, data_type="return") == 0.1099
         assert energy.lowest_return_price_time == datetime.strptime(
             "2022-12-29 02:00",
             "%Y-%m-%d %H:%M",
-        ).replace(tzinfo=timezone.utc)
+        ).replace(tzinfo=UTC)
         assert energy.highest_return_price_time == datetime.strptime(
             "2022-12-29 17:00",
             "%Y-%m-%d %H:%M",
-        ).replace(tzinfo=timezone.utc)
+        ).replace(tzinfo=UTC)
         assert energy.pct_of_max_return == 89.85
         assert isinstance(energy.timestamp_return_prices, list)
 
