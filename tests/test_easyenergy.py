@@ -1,4 +1,5 @@
 """Basic tests for the easyEnergy API."""
+
 # pylint: disable=protected-access
 import asyncio
 from typing import Any
@@ -91,11 +92,14 @@ async def test_client_error() -> None:
     """Test request client error is handled correctly."""
     async with ClientSession() as session:
         client = EasyEnergy(session=session)
-        with patch.object(
-            session,
-            "request",
-            side_effect=ClientError,
-        ), pytest.raises(EasyEnergyConnectionError):
+        with (
+            patch.object(
+                session,
+                "request",
+                side_effect=ClientError,
+            ),
+            pytest.raises(EasyEnergyConnectionError),
+        ):
             assert await client._request("test")
 
 
@@ -103,11 +107,14 @@ async def test_dns_error() -> None:
     """Test request DNS error is handled correctly."""
     async with ClientSession() as session:
         client = EasyEnergy(session=session)
-        with patch.object(
-            DNSResolver,
-            "query",
-            side_effect=DNSError,
-        ), pytest.raises(EasyEnergyConnectionError):
+        with (
+            patch.object(
+                DNSResolver,
+                "query",
+                side_effect=DNSError,
+            ),
+            pytest.raises(EasyEnergyConnectionError),
+        ):
             assert await client._request("test")
 
 
@@ -117,9 +124,12 @@ async def test_empty_dns_error() -> None:
         client = EasyEnergy(session=session)
         dns_result: Any = asyncio.Future()
         dns_result.set_result(None)
-        with patch.object(
-            DNSResolver,
-            "query",
-            return_value=dns_result,
-        ), pytest.raises(EasyEnergyConnectionError):
+        with (
+            patch.object(
+                DNSResolver,
+                "query",
+                return_value=dns_result,
+            ),
+            pytest.raises(EasyEnergyConnectionError),
+        ):
             assert await client._request("test")
