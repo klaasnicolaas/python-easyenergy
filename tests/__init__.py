@@ -1,4 +1,5 @@
 """Asynchronous Python client for the easyEnergy API."""
+
 from pathlib import Path
 
 
