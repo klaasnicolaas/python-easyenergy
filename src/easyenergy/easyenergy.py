@@ -23,6 +23,8 @@ from .exceptions import (
 )
 from .models import Electricity, Gas
 
+VERSION = metadata.version(__package__)
+
 
 @dataclass
 class EasyEnergy:
@@ -61,8 +63,6 @@ class EasyEnergy:
                 the API.
 
         """
-        version = metadata.version(__package__)
-
         # EasyEnergy is experiencing IPv6 connection issues.
         # DNS returns an AAAA record with an IPv6 address, but
         # there doesn't appear to be something listening at that.
@@ -86,7 +86,7 @@ class EasyEnergy:
 
         headers = {
             "Accept": "application/json, text/plain",
-            "User-Agent": f"PythonEasyEnergy/{version}",
+            "User-Agent": f"PythonEasyEnergy/{VERSION}",
             "Host": API_HOST,
         }
 
