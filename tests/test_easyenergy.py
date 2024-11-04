@@ -17,7 +17,9 @@ from easyenergy.exceptions import EasyEnergyConnectionError, EasyEnergyError
 from . import load_fixtures
 
 
-async def test_json_request(aresponses: ResponsesMockServer) -> None:
+async def test_json_request(
+    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+) -> None:
     """Test JSON response is handled correctly."""
     aresponses.add(
         "mijn.easyenergy.com",
@@ -29,11 +31,9 @@ async def test_json_request(aresponses: ResponsesMockServer) -> None:
             text=load_fixtures("energy.json"),
         ),
     )
-    async with ClientSession() as session:
-        client = EasyEnergy(session=session)
-        response = await client._request("test")
-        assert response is not None
-        await client.close()
+    response = await easyenergy_client._request("test")
+    assert response is not None
+    await easyenergy_client.close()
 
 
 async def test_internal_session(aresponses: ResponsesMockServer) -> None:
@@ -68,7 +68,9 @@ async def test_timeout(aresponses: ResponsesMockServer) -> None:
             assert await client._request("test")
 
 
-async def test_content_type(aresponses: ResponsesMockServer) -> None:
+async def test_content_type(
+    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+) -> None:
     """Test request content type error is handled correctly."""
     aresponses.add(
         "mijn.easyenergy.com",
@@ -79,13 +81,8 @@ async def test_content_type(aresponses: ResponsesMockServer) -> None:
             headers={"Content-Type": "blabla/blabla"},
         ),
     )
-
-    async with ClientSession() as session:
-        client = EasyEnergy(
-            session=session,
-        )
-        with pytest.raises(EasyEnergyError):
-            assert await client._request("test")
+    with pytest.raises(EasyEnergyError):
+        assert await easyenergy_client._request("test")
 
 
 async def test_client_error() -> None:
