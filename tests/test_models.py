@@ -4,6 +4,7 @@ from datetime import UTC, date, datetime
 
 import pytest
 from aresponses import ResponsesMockServer
+from syrupy.assertion import SnapshotAssertion
 
 from easyenergy import EasyEnergy, EasyEnergyNoDataError, Electricity, Gas, VatOption
 
@@ -12,7 +13,9 @@ from . import load_fixtures
 
 @pytest.mark.freeze_time("2022-12-29 15:00:00+01:00")
 async def test_electricity_model_usage(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test the electricity model for usage at 15:00:00 CET."""
     aresponses.add(
@@ -31,7 +34,7 @@ async def test_electricity_model_usage(
         end_date=today,
         vat=VatOption.INCLUDE,
     )
-    assert energy is not None
+    assert energy == snapshot
     assert isinstance(energy, Electricity)
 
     # Test the electricity model
@@ -60,7 +63,9 @@ async def test_electricity_model_usage(
 
 @pytest.mark.freeze_time("2022-12-29 15:00:00+01:00")
 async def test_electricity_model_return(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test the electricity model for return at 15:00:00 CET."""
     aresponses.add(
@@ -79,7 +84,7 @@ async def test_electricity_model_return(
         end_date=today,
         vat=VatOption.INCLUDE,
     )
-    assert energy is not None
+    assert energy == snapshot
     assert isinstance(energy, Electricity)
 
     # Test the electricity model
@@ -105,7 +110,9 @@ async def test_electricity_model_return(
 
 @pytest.mark.freeze_time("2022-12-29 00:30:00+02:00")
 async def test_electricity_midnight(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test the electricity model between 00:00 and 01:00 with in CEST."""
     aresponses.add(
@@ -124,7 +131,7 @@ async def test_electricity_midnight(
         end_date=today,
         vat=VatOption.INCLUDE,
     )
-    assert energy is not None
+    assert energy == snapshot
     assert isinstance(energy, Electricity)
 
     # Test the electricity model
@@ -133,7 +140,9 @@ async def test_electricity_midnight(
 
 
 async def test_electricity_none_data(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test when there is no data for the current datetime."""
     aresponses.add(
@@ -151,14 +160,15 @@ async def test_electricity_none_data(
         start_date=today,
         end_date=today,
     )
-    assert energy is not None
+    assert energy == snapshot
     assert isinstance(energy, Electricity)
     assert energy.current_return_price is None
     assert energy.average_return_price == 0.06368
 
 
 async def test_no_electricity_data(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test when there is no electricity data."""
     aresponses.add(
@@ -178,7 +188,9 @@ async def test_no_electricity_data(
 
 @pytest.mark.freeze_time("2022-12-14 15:00:00+01:00")
 async def test_gas_model(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test the gas model - easyEnergy at 15:00:00 CET."""
     aresponses.add(
@@ -197,7 +209,7 @@ async def test_gas_model(
         end_date=today,
         vat=VatOption.INCLUDE,
     )
-    assert gas is not None
+    assert gas == snapshot
     assert isinstance(gas, Gas)
 
     # Test the gas model
@@ -210,7 +222,9 @@ async def test_gas_model(
 
 @pytest.mark.freeze_time("2022-12-14 04:00:00+01:00")
 async def test_gas_morning_model(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test the gas model in the morning - easyEnergy at 04:00:00 CET."""
     aresponses.add(
@@ -229,7 +243,7 @@ async def test_gas_morning_model(
         end_date=today,
         vat=VatOption.INCLUDE,
     )
-    assert gas is not None
+    assert gas == snapshot
     assert isinstance(gas, Gas)
     assert gas.extreme_prices[1] == 1.48534
     assert gas.extreme_prices[0] == 1.4645
@@ -238,7 +252,9 @@ async def test_gas_morning_model(
 
 
 async def test_gas_none_data(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    snapshot: SnapshotAssertion,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test when there is no data for the current datetime."""
     aresponses.add(
@@ -256,14 +272,15 @@ async def test_gas_none_data(
         start_date=today,
         end_date=today,
     )
-    assert gas is not None
+    assert gas == snapshot
     assert isinstance(gas, Gas)
     assert gas.current_price is None
     assert gas.average_price == 1.47951
 
 
 async def test_no_gas_data(
-    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+    aresponses: ResponsesMockServer,
+    easyenergy_client: EasyEnergy,
 ) -> None:
     """Test when there is no gas data."""
     aresponses.add(
