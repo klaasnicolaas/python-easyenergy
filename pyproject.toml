@@ -1,14 +1,12 @@
-[tool.poetry]
+[project]
 name = "easyenergy"
 version = "0.0.0"
 description = "Asynchronous Python client providing energy/gas prices from easyEnergy"
-authors = ["Klaas Schoute <hello@student-techlife.com>"]
-maintainers = ["Klaas Schoute <hello@student-techlife.com>"]
+authors = [{ name="Klaas Schoute", email="<hello@student-techlife.com>"}]
+maintainers = [{name="Klaas Schoute", email="<hello@student-techlife.com>"}]
 license = "MIT"
+requires-python = ">=3.11"
 readme = "README.md"
-homepage = "https://github.com/klaasnicolaas/python-easyenergy"
-repository = "https://github.com/klaasnicolaas/python-easyenergy"
-documentation = "https://github.com/klaasnicolaas/python-easyenergy"
 keywords = ["energy", "easyenergy", "gas", "prices", "api", "async", "client"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -22,6 +20,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dynamic = ["dependencies"]
 packages = [
   { include = "easyenergy", from = "src"},
 ]
@@ -32,7 +31,10 @@ aiohttp = ">=3.0.0"
 python = "^3.11"
 yarl = ">=1.6.0"
 
-[tool.poetry.urls]
+[project.urls]
+homepage = "https://github.com/klaasnicolaas/python-easyenergy"
+repository = "https://github.com/klaasnicolaas/python-easyenergy"
+documentation = "https://github.com/klaasnicolaas/python-easyenergy"
 "Bug Tracker" = "https://github.com/klaasnicolaas/python-easyenergy/issues"
 Changelog = "https://github.com/klaasnicolaas/python-easyenergy/releases"
 
@@ -135,7 +137,6 @@ lint.ignore = [
 
   # Conflicts with the Ruff formatter
   "COM812",
-  "ISC001",
 ]
 
 [tool.ruff.lint.flake8-pytest-style]
