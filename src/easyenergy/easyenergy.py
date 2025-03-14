@@ -7,7 +7,7 @@ import socket
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, timedelta
 from importlib import metadata
-from typing import Any, Self, cast
+from typing import Any, Self
 
 from aiodns import DNSResolver
 from aiodns.error import DNSError
@@ -120,7 +120,7 @@ class EasyEnergy:
                 {"Content-Type": content_type, "response": text},
             )
 
-        return cast(dict[str, Any], await response.json())
+        return await response.json()
 
     async def gas_prices(
         self,
