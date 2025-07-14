@@ -157,14 +157,14 @@ pytest-asyncio = {version = ">=0.17.0", markers = "python_version >= \"3.7\""}
 
 [[package]]
 name = "astroid"
-version = "3.3.10"
+version = "3.3.11"
 description = "An abstract syntax tree for Python with inference support."
 optional = false
 python-versions = ">=3.9.0"
 groups = ["dev"]
 files = [
-    {file = "astroid-3.3.10-py3-none-any.whl", hash = "sha256:104fb9cb9b27ea95e847a94c003be03a9e039334a8ebca5ee27dafaf5c5711eb"},
-    {file = "astroid-3.3.10.tar.gz", hash = "sha256:c332157953060c6deb9caa57303ae0d20b0fbdb2e59b4a4f2a6ba49d0a7961ce"},
+    {file = "astroid-3.3.11-py3-none-any.whl", hash = "sha256:54c760ae8322ece1abd213057c4b5bba7c49818853fc901ef09719a60dbf9dec"},
+    {file = "astroid-3.3.11.tar.gz", hash = "sha256:1e5a5011af2920c7c67a53f65d536d65bfa7116feeaf2354d8b94f29573bb0ce"},
 ]
 
 [[package]]
@@ -372,14 +372,14 @@ typing = ["typing-extensions (>=4.12.2) ; python_version < \"3.11\""]
 
 [[package]]
 name = "freezegun"
-version = "1.5.2"
+version = "1.5.3"
 description = "Let your Python tests travel through time"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "freezegun-1.5.2-py3-none-any.whl", hash = "sha256:5aaf3ba229cda57afab5bd311f0108d86b6fb119ae89d2cd9c43ec8c1733c85b"},
-    {file = "freezegun-1.5.2.tar.gz", hash = "sha256:a54ae1d2f9c02dbf42e02c18a3ab95ab4295818b549a34dac55592d72a905181"},
+    {file = "freezegun-1.5.3-py3-none-any.whl", hash = "sha256:1ce20ee4be61349ba52c3af64f5eaba8d08ff51acfcf1b3ea671f03e54c818f1"},
+    {file = "freezegun-1.5.3.tar.gz", hash = "sha256:d7c6204e33a50affd7c7aa284f4f92e04e96f72d63313b89ceaaf60d9c64bc5e"},
 ]
 
 [package.dependencies]
