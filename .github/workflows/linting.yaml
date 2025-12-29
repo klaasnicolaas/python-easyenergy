@@ -105,8 +105,6 @@ jobs:
         run: poetry run prek run check-xml --all-files
       - name: 🚀 Check YAML files
         run: poetry run prek run check-yaml --all-files
-      - name: 🚀 Check YAML files
-        run: poetry run prek run check-yaml --all-files
       - name: 🚀 Detect Private Keys
         run: poetry run prek run detect-private-key --all-files
       - name: 🚀 Check End of Files
