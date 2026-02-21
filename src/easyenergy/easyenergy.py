@@ -21,7 +21,7 @@ from .exceptions import (
 )
 from .models import Electricity, Gas
 
-VERSION = metadata.version(__package__)
+VERSION: str = metadata.version(__package__)  # ty:ignore[invalid-argument-type]
 
 
 @dataclass
