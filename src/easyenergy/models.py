@@ -4,10 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
+from typing import Any
 
 
 def _timed_value(moment: datetime, prices: dict[datetime, float]) -> float | None:
@@ -33,21 +30,23 @@ def _timed_value(moment: datetime, prices: dict[datetime, float]) -> float | Non
 
 def _get_pricetime(
     prices: dict[datetime, float],
-    func: Callable[[dict[datetime, float]], datetime],
+    *,
+    highest: bool,
 ) -> datetime:
     """Return the time of the price.
 
     Args:
     ----
         prices: A dictionary with market prices.
-        func: A function to get the time.
+        highest: Whether to return the highest or lowest price timestamp.
 
     Returns:
     -------
         The time of the price.
 
     """
-    return func(prices, key=prices.get)  # type: ignore[call-arg]
+    selector = max if highest else min
+    return selector(prices, key=prices.__getitem__)
 
 
 def _generate_timestamp_list(
@@ -158,7 +157,7 @@ class Electricity:
             The time of the highest price for usage.
 
         """
-        return _get_pricetime(self.usage_prices, max)
+        return _get_pricetime(self.usage_prices, highest=True)
 
     @property
     def highest_return_price_time(self) -> datetime:
@@ -169,7 +168,7 @@ class Electricity:
             The time of the highest price for return.
 
         """
-        return _get_pricetime(self.return_prices, max)
+        return _get_pricetime(self.return_prices, highest=True)
 
     @property
     def lowest_usage_price_time(self) -> datetime:
@@ -180,7 +179,7 @@ class Electricity:
             The time of the lowest price for usage.
 
         """
-        return _get_pricetime(self.usage_prices, min)
+        return _get_pricetime(self.usage_prices, highest=False)
 
     @property
     def lowest_return_price_time(self) -> datetime:
@@ -191,7 +190,7 @@ class Electricity:
             The time of the lowest price for return.
 
         """
-        return _get_pricetime(self.return_prices, min)
+        return _get_pricetime(self.return_prices, highest=False)
 
     @property
     def pct_of_max_usage(self) -> float:
