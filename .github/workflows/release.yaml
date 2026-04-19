@@ -56,7 +56,7 @@ jobs:
       - uses: myConsciousness/bluesky-post@96827d0a9604cb228b11b3095f6961196efba4a0 # v5.0.0
         with:
           text: |
-            ⬆️ ${{ github.event.release.tag_name }} of ${{ github.event.repository.name }} just released 🎉 #update @klaasnicolaas #python #package #easyenergy #prices #release #bot #assistant
+            ⬆️ ${{ github.event.release.tag_name }} of ${{ github.event.repository.name }} is out 🎉 #update @klaasnicolaas.nl #python #package #easyenergy #prices #release
 
             Check out the release notes here: ${{ github.event.release.html_url }}
           identifier: ${{ secrets.BLUESKY_IDENTIFIER }}
