@@ -48,6 +48,7 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
+    environment: testing
     needs: pytest
     permissions:
       contents: read
