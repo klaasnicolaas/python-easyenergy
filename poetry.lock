@@ -1638,4 +1638,4 @@ cli = ["typer"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "5f1329f504a4f0b668e13d82704b96bee66a1937e6f0bf20d53e013b788d9575"
+content-hash = "07fc10f67c9aa871fc8cc422001e85abee842c6a25c9b7d7f1ee2a85574f2de0"
