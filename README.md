@@ -29,6 +29,12 @@ A Python package for retrieving dynamic electricity and gas prices from [easyEne
 pip install easyenergy
 ```
 
+To use the CLI as well:
+
+```bash
+pip install "easyenergy[cli]"
+```
+
 ## Data
 
 > [!NOTE]
@@ -149,6 +155,29 @@ poetry run python ./examples/prices_list.py
 ```
 
 Those files are intentionally simple and meant as package-usage references, not as a full CLI. Update the fixed request date constants in the files when you want to inspect another day.
+
+### CLI Tool
+
+The package also ships a Rich/Typer-based CLI under [`src/easyenergy/cli`](src/easyenergy/cli):
+
+```bash
+poetry run easyenergy energy --date 2026-04-19
+poetry run easyenergy energy --date 2026-04-19 --price-type invoice
+poetry run easyenergy gas --start-date 2026-04-01 --end-date 2026-04-02
+poetry run easyenergy prices-list --date 2026-04-19 --granularity quarter
+poetry run easyenergy entities --date 2026-04-19
+```
+
+The `entities` command shows all available properties for Home Assistant integration, grouped by usage, return, and gas.
+
+Useful CLI options:
+
+- `--date YYYY-MM-DD` for a single day
+- `--start-date YYYY-MM-DD --end-date YYYY-MM-DD` for a range
+- `--vat include|exclude` to switch between market prices with or without VAT
+- `--price-type market|invoice` to choose between market and billed electricity usage prices
+- `--granularity hour|quarter` for electricity commands
+- `--limit N` to limit the number of printed intervals; without it, all returned intervals are shown
 
 ### Class Parameters
 
