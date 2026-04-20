@@ -1,0 +1,178 @@
+"""Async Typer support for the easyEnergy CLI.
+
+Adaptation of the snippet/code from:
+- https://github.com/tiangolo/typer/issues/88#issuecomment-1613013597
+- https://github.com/argilla-io/argilla/blob/e77ca86c629a492019f230ac55ebde207b280xc9c/src/argilla/cli/typer_ext.py
+"""
+
+#  Copyright 2021-present, the Recognai S.L. team.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+from __future__ import annotations
+
+import asyncio
+from collections.abc import Callable
+from functools import wraps
+from typing import TYPE_CHECKING, Any, TypeVar, cast
+
+from typer import Exit
+from typer import Typer as SyncTyper
+
+if TYPE_CHECKING:
+    from typer.core import TyperCommand, TyperGroup
+
+_CommandFunc = TypeVar("_CommandFunc", bound=Callable[..., Any])
+
+HandleErrorFunc = Callable[[Any], None]
+
+
+class AsyncTyper(SyncTyper):
+    """A Typer subclass that supports async commands and callbacks."""
+
+    error_handlers: dict[type[Exception], HandleErrorFunc]
+
+    # pylint: disable-next=too-many-arguments,too-many-locals
+    def callback(  # noqa: PLR0913  # ty:ignore[invalid-method-override]
+        self,
+        *,
+        cls: type[TyperGroup] | None = None,
+        invoke_without_command: bool = False,
+        no_args_is_help: bool = False,
+        subcommand_metavar: str | None = None,
+        chain: bool = False,
+        result_callback: Callable[..., Any] | None = None,
+        context_settings: dict[Any, Any] | None = None,
+        # pylint: disable-next=redefined-builtin
+        help: str | None = None,  # noqa: A002
+        epilog: str | None = None,
+        short_help: str | None = None,
+        options_metavar: str = "[OPTIONS]",
+        add_help_option: bool = True,
+        hidden: bool = False,
+        deprecated: bool = False,
+        rich_help_panel: str | None = None,
+    ) -> Callable[[_CommandFunc], _CommandFunc]:
+        """Create a new Typer callback."""
+        super_callback = super().callback(
+            cls=cls,
+            invoke_without_command=invoke_without_command,
+            no_args_is_help=no_args_is_help,
+            subcommand_metavar=subcommand_metavar,
+            chain=chain,
+            result_callback=result_callback,
+            context_settings=context_settings,
+            help=help,
+            epilog=epilog,
+            short_help=short_help,
+            options_metavar=options_metavar,
+            add_help_option=add_help_option,
+            hidden=hidden,
+            deprecated=deprecated,
+            rich_help_panel=rich_help_panel,
+        )
+
+        def decorator(func: _CommandFunc) -> _CommandFunc:
+            if asyncio.iscoroutinefunction(func):
+
+                @wraps(func)
+                def sync_func(*_args: Any, **_kwargs: Any) -> Any:
+                    return asyncio.run(func(*_args, **_kwargs))
+
+                super_callback(sync_func)
+            else:
+                super_callback(cast("Callable[..., Any]", func))
+
+            return func
+
+        return decorator
+
+    # pylint: disable-next=too-many-arguments
+    def command(  # noqa: PLR0913  # ty:ignore[invalid-method-override]
+        self,
+        name: str | None = None,
+        *,
+        cls: type[TyperCommand] | None = None,
+        context_settings: dict[Any, Any] | None = None,
+        # pylint: disable-next=redefined-builtin
+        help: str | None = None,  # noqa: A002
+        epilog: str | None = None,
+        short_help: str | None = None,
+        options_metavar: str = "[OPTIONS]",
+        add_help_option: bool = True,
+        no_args_is_help: bool = False,
+        hidden: bool = False,
+        deprecated: bool = False,
+        rich_help_panel: str | None = None,
+    ) -> Callable[[_CommandFunc], _CommandFunc]:
+        """Create a new Typer command."""
+        super_command = super().command(
+            name,
+            cls=cls,
+            context_settings=context_settings,
+            help=help,
+            epilog=epilog,
+            short_help=short_help,
+            options_metavar=options_metavar,
+            add_help_option=add_help_option,
+            no_args_is_help=no_args_is_help,
+            hidden=hidden,
+            deprecated=deprecated,
+            rich_help_panel=rich_help_panel,
+        )
+
+        def decorator(func: _CommandFunc) -> _CommandFunc:
+            if asyncio.iscoroutinefunction(func):
+
+                @wraps(func)
+                def sync_func(*_args: Any, **_kwargs: Any) -> Any:
+                    return asyncio.run(func(*_args, **_kwargs))
+
+                super_command(sync_func)
+            else:
+                super_command(cast("Callable[..., Any]", func))
+
+            return func
+
+        return decorator
+
+    def error_handler(self, exc: type[Exception]) -> Callable[[HandleErrorFunc], None]:
+        """Register an error handler for a given exception."""
+        if not hasattr(self, "error_handlers"):
+            self.error_handlers = {}
+
+        def decorator(func: HandleErrorFunc) -> None:
+            self.error_handlers[exc] = func
+
+        return decorator
+
+    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        """Call the Typer application."""
+        standalone_mode = kwargs.get("standalone_mode", True)
+        try:
+            return super().__call__(*args, **kwargs)
+        except Exit:
+            raise
+        # pylint: disable-next=broad-exception-caught
+        except Exception as exception:
+            if (
+                not hasattr(self, "error_handlers")
+                or (handler := self.error_handlers.get(type(exception))) is None
+            ):
+                raise
+            try:
+                return handler(exception)
+            except Exit as exit_exception:
+                if standalone_mode:
+                    return exit_exception.exit_code
+                raise
