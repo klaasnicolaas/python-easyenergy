@@ -1,22 +1,1360 @@
 # serializer version: 1
-# name: test_electricity_midnight
-  Electricity(usage_prices={FakeDatetime(2022, 12, 28, 22, 0, tzinfo=datetime.timezone.utc): 0.0234132, FakeDatetime(2022, 12, 28, 23, 0, tzinfo=datetime.timezone.utc): -0.0008829, FakeDatetime(2022, 12, 29, 0, 0, tzinfo=datetime.timezone.utc): -0.0009265, FakeDatetime(2022, 12, 29, 1, 0, tzinfo=datetime.timezone.utc): -0.001635, FakeDatetime(2022, 12, 29, 2, 0, tzinfo=datetime.timezone.utc): -0.0027686, FakeDatetime(2022, 12, 29, 3, 0, tzinfo=datetime.timezone.utc): -0.0021364, FakeDatetime(2022, 12, 29, 4, 0, tzinfo=datetime.timezone.utc): -0.0009701, FakeDatetime(2022, 12, 29, 5, 0, tzinfo=datetime.timezone.utc): -0.0006431, FakeDatetime(2022, 12, 29, 6, 0, tzinfo=datetime.timezone.utc): 9.81e-05, FakeDatetime(2022, 12, 29, 7, 0, tzinfo=datetime.timezone.utc): 0.0435673, FakeDatetime(2022, 12, 29, 8, 0, tzinfo=datetime.timezone.utc): 0.10464, FakeDatetime(2022, 12, 29, 9, 0, tzinfo=datetime.timezone.utc): 0.1190607, FakeDatetime(2022, 12, 29, 10, 0, tzinfo=datetime.timezone.utc): 0.1188427, FakeDatetime(2022, 12, 29, 11, 0, tzinfo=datetime.timezone.utc): 0.110417, FakeDatetime(2022, 12, 29, 12, 0, tzinfo=datetime.timezone.utc): 0.10464, FakeDatetime(2022, 12, 29, 13, 0, tzinfo=datetime.timezone.utc): 0.108891, FakeDatetime(2022, 12, 29, 14, 0, tzinfo=datetime.timezone.utc): 0.1199, FakeDatetime(2022, 12, 29, 15, 0, tzinfo=datetime.timezone.utc): 0.119791, FakeDatetime(2022, 12, 29, 16, 0, tzinfo=datetime.timezone.utc): 0.130909, FakeDatetime(2022, 12, 29, 17, 0, tzinfo=datetime.timezone.utc): 0.1334487, FakeDatetime(2022, 12, 29, 18, 0, tzinfo=datetime.timezone.utc): 0.1308763, FakeDatetime(2022, 12, 29, 19, 0, tzinfo=datetime.timezone.utc): 0.1308, FakeDatetime(2022, 12, 29, 20, 0, tzinfo=datetime.timezone.utc): 0.1141012, FakeDatetime(2022, 12, 29, 21, 0, tzinfo=datetime.timezone.utc): 0.0919306, FakeDatetime(2022, 12, 29, 22, 0, tzinfo=datetime.timezone.utc): 0.0399376}, return_prices={FakeDatetime(2022, 12, 28, 22, 0, tzinfo=datetime.timezone.utc): 0.02148, FakeDatetime(2022, 12, 28, 23, 0, tzinfo=datetime.timezone.utc): -0.00081, FakeDatetime(2022, 12, 29, 0, 0, tzinfo=datetime.timezone.utc): -0.00085, FakeDatetime(2022, 12, 29, 1, 0, tzinfo=datetime.timezone.utc): -0.0015, FakeDatetime(2022, 12, 29, 2, 0, tzinfo=datetime.timezone.utc): -0.00254, FakeDatetime(2022, 12, 29, 3, 0, tzinfo=datetime.timezone.utc): -0.00196, FakeDatetime(2022, 12, 29, 4, 0, tzinfo=datetime.timezone.utc): -0.00089, FakeDatetime(2022, 12, 29, 5, 0, tzinfo=datetime.timezone.utc): -0.00059, FakeDatetime(2022, 12, 29, 6, 0, tzinfo=datetime.timezone.utc): 9e-05, FakeDatetime(2022, 12, 29, 7, 0, tzinfo=datetime.timezone.utc): 0.03997, FakeDatetime(2022, 12, 29, 8, 0, tzinfo=datetime.timezone.utc): 0.096, FakeDatetime(2022, 12, 29, 9, 0, tzinfo=datetime.timezone.utc): 0.10923, FakeDatetime(2022, 12, 29, 10, 0, tzinfo=datetime.timezone.utc): 0.10903, FakeDatetime(2022, 12, 29, 11, 0, tzinfo=datetime.timezone.utc): 0.1013, FakeDatetime(2022, 12, 29, 12, 0, tzinfo=datetime.timezone.utc): 0.096, FakeDatetime(2022, 12, 29, 13, 0, tzinfo=datetime.timezone.utc): 0.0999, FakeDatetime(2022, 12, 29, 14, 0, tzinfo=datetime.timezone.utc): 0.11, FakeDatetime(2022, 12, 29, 15, 0, tzinfo=datetime.timezone.utc): 0.1099, FakeDatetime(2022, 12, 29, 16, 0, tzinfo=datetime.timezone.utc): 0.1201, FakeDatetime(2022, 12, 29, 17, 0, tzinfo=datetime.timezone.utc): 0.12243, FakeDatetime(2022, 12, 29, 18, 0, tzinfo=datetime.timezone.utc): 0.12007, FakeDatetime(2022, 12, 29, 19, 0, tzinfo=datetime.timezone.utc): 0.12, FakeDatetime(2022, 12, 29, 20, 0, tzinfo=datetime.timezone.utc): 0.10468, FakeDatetime(2022, 12, 29, 21, 0, tzinfo=datetime.timezone.utc): 0.08434, FakeDatetime(2022, 12, 29, 22, 0, tzinfo=datetime.timezone.utc): 0.03664})
+# name: test_electricity_accessors_and_invalid_data_type
+  dict({
+    'averages': dict({
+      'return': 0.75,
+      'usage': 1.5,
+    }),
+    'current': dict({
+      'invoice': 1.1,
+      'market': 1.0,
+      'market_excluding_vat': 0.5,
+      'return': 0.5,
+      'usage': 1.0,
+    }),
+    'extremes': dict({
+      'return': tuple(
+        0.5,
+        1.0,
+      ),
+      'usage': tuple(
+        1.0,
+        2.0,
+      ),
+    }),
+    'intervals': tuple(
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc), price=0.5, price_inc_vat=1.0, energy_tax=0.1, purchase_price=0.2, invoice_price=1.1, average=0.75, average_inc=1.5, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc), price=1.0, price_inc_vat=2.0, energy_tax=0.1, purchase_price=0.2, invoice_price=2.1, average=0.75, average_inc=1.5, unit='kWh', granularity='hour'),
+    ),
+    'series': dict({
+      'invoice': list([
+        dict({
+          'price': 1.1,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 2.1,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'market': list([
+        dict({
+          'price': 1.0,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 2.0,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'market_excluding_vat': list([
+        dict({
+          'price': 0.5,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 1.0,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'return': list([
+        dict({
+          'price': 0.5,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 1.0,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'usage': list([
+        dict({
+          'price': 1.0,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 2.0,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+    }),
+    'times': dict({
+      'highest_return': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+      'highest_usage': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+      'lowest_return': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+      'lowest_usage': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+    }),
+  })
 # ---
-# name: test_electricity_model_return
-  Electricity(usage_prices={FakeDatetime(2022, 12, 28, 22, 0, tzinfo=datetime.timezone.utc): 0.0234132, FakeDatetime(2022, 12, 28, 23, 0, tzinfo=datetime.timezone.utc): -0.0008829, FakeDatetime(2022, 12, 29, 0, 0, tzinfo=datetime.timezone.utc): -0.0009265, FakeDatetime(2022, 12, 29, 1, 0, tzinfo=datetime.timezone.utc): -0.001635, FakeDatetime(2022, 12, 29, 2, 0, tzinfo=datetime.timezone.utc): -0.0027686, FakeDatetime(2022, 12, 29, 3, 0, tzinfo=datetime.timezone.utc): -0.0021364, FakeDatetime(2022, 12, 29, 4, 0, tzinfo=datetime.timezone.utc): -0.0009701, FakeDatetime(2022, 12, 29, 5, 0, tzinfo=datetime.timezone.utc): -0.0006431, FakeDatetime(2022, 12, 29, 6, 0, tzinfo=datetime.timezone.utc): 9.81e-05, FakeDatetime(2022, 12, 29, 7, 0, tzinfo=datetime.timezone.utc): 0.0435673, FakeDatetime(2022, 12, 29, 8, 0, tzinfo=datetime.timezone.utc): 0.10464, FakeDatetime(2022, 12, 29, 9, 0, tzinfo=datetime.timezone.utc): 0.1190607, FakeDatetime(2022, 12, 29, 10, 0, tzinfo=datetime.timezone.utc): 0.1188427, FakeDatetime(2022, 12, 29, 11, 0, tzinfo=datetime.timezone.utc): 0.110417, FakeDatetime(2022, 12, 29, 12, 0, tzinfo=datetime.timezone.utc): 0.10464, FakeDatetime(2022, 12, 29, 13, 0, tzinfo=datetime.timezone.utc): 0.108891, FakeDatetime(2022, 12, 29, 14, 0, tzinfo=datetime.timezone.utc): 0.1199, FakeDatetime(2022, 12, 29, 15, 0, tzinfo=datetime.timezone.utc): 0.119791, FakeDatetime(2022, 12, 29, 16, 0, tzinfo=datetime.timezone.utc): 0.130909, FakeDatetime(2022, 12, 29, 17, 0, tzinfo=datetime.timezone.utc): 0.1334487, FakeDatetime(2022, 12, 29, 18, 0, tzinfo=datetime.timezone.utc): 0.1308763, FakeDatetime(2022, 12, 29, 19, 0, tzinfo=datetime.timezone.utc): 0.1308, FakeDatetime(2022, 12, 29, 20, 0, tzinfo=datetime.timezone.utc): 0.1141012, FakeDatetime(2022, 12, 29, 21, 0, tzinfo=datetime.timezone.utc): 0.0919306, FakeDatetime(2022, 12, 29, 22, 0, tzinfo=datetime.timezone.utc): 0.0399376}, return_prices={FakeDatetime(2022, 12, 28, 22, 0, tzinfo=datetime.timezone.utc): 0.02148, FakeDatetime(2022, 12, 28, 23, 0, tzinfo=datetime.timezone.utc): -0.00081, FakeDatetime(2022, 12, 29, 0, 0, tzinfo=datetime.timezone.utc): -0.00085, FakeDatetime(2022, 12, 29, 1, 0, tzinfo=datetime.timezone.utc): -0.0015, FakeDatetime(2022, 12, 29, 2, 0, tzinfo=datetime.timezone.utc): -0.00254, FakeDatetime(2022, 12, 29, 3, 0, tzinfo=datetime.timezone.utc): -0.00196, FakeDatetime(2022, 12, 29, 4, 0, tzinfo=datetime.timezone.utc): -0.00089, FakeDatetime(2022, 12, 29, 5, 0, tzinfo=datetime.timezone.utc): -0.00059, FakeDatetime(2022, 12, 29, 6, 0, tzinfo=datetime.timezone.utc): 9e-05, FakeDatetime(2022, 12, 29, 7, 0, tzinfo=datetime.timezone.utc): 0.03997, FakeDatetime(2022, 12, 29, 8, 0, tzinfo=datetime.timezone.utc): 0.096, FakeDatetime(2022, 12, 29, 9, 0, tzinfo=datetime.timezone.utc): 0.10923, FakeDatetime(2022, 12, 29, 10, 0, tzinfo=datetime.timezone.utc): 0.10903, FakeDatetime(2022, 12, 29, 11, 0, tzinfo=datetime.timezone.utc): 0.1013, FakeDatetime(2022, 12, 29, 12, 0, tzinfo=datetime.timezone.utc): 0.096, FakeDatetime(2022, 12, 29, 13, 0, tzinfo=datetime.timezone.utc): 0.0999, FakeDatetime(2022, 12, 29, 14, 0, tzinfo=datetime.timezone.utc): 0.11, FakeDatetime(2022, 12, 29, 15, 0, tzinfo=datetime.timezone.utc): 0.1099, FakeDatetime(2022, 12, 29, 16, 0, tzinfo=datetime.timezone.utc): 0.1201, FakeDatetime(2022, 12, 29, 17, 0, tzinfo=datetime.timezone.utc): 0.12243, FakeDatetime(2022, 12, 29, 18, 0, tzinfo=datetime.timezone.utc): 0.12007, FakeDatetime(2022, 12, 29, 19, 0, tzinfo=datetime.timezone.utc): 0.12, FakeDatetime(2022, 12, 29, 20, 0, tzinfo=datetime.timezone.utc): 0.10468, FakeDatetime(2022, 12, 29, 21, 0, tzinfo=datetime.timezone.utc): 0.08434, FakeDatetime(2022, 12, 29, 22, 0, tzinfo=datetime.timezone.utc): 0.03664})
+# name: test_electricity_model_invoice_usage
+  dict({
+    'averages': dict({
+      'return': 0.09516,
+      'usage': 0.0786,
+    }),
+    'current': dict({
+      'invoice': 0.13037,
+      'market': -0.00226,
+      'market_excluding_vat': -0.00226,
+      'return': -0.00226,
+      'usage': -0.00226,
+    }),
+    'extremes': dict({
+      'return': tuple(
+        -0.003,
+        0.15082,
+      ),
+      'usage': tuple(
+        -0.003,
+        0.12464,
+      ),
+    }),
+    'intervals': tuple(
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc), price=0.11549, price_inc_vat=0.13975, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.27238, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc), price=0.10522, price_inc_vat=0.12732, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25995, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc), price=0.1092, price_inc_vat=0.13213, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.26476, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc), price=0.10325, price_inc_vat=0.12493, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25756, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc), price=0.10346, price_inc_vat=0.12519, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25782, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc), price=0.09795, price_inc_vat=0.11852, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25115, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc), price=0.10071, price_inc_vat=0.12186, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25449, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc), price=0.09793, price_inc_vat=0.1185, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25113, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc), price=0.09725, price_inc_vat=0.11768, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25031, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc), price=0.08766, price_inc_vat=0.10607, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.2387, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc), price=0.06132, price_inc_vat=0.07419, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.20682, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc), price=0.02832, price_inc_vat=0.03426, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.16689, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc), price=0.00806, price_inc_vat=0.00975, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.14238, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc), price=-0.00085, price_inc_vat=-0.00085, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.13178, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc), price=-0.003, price_inc_vat=-0.003, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.12963, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc), price=-0.00226, price_inc_vat=-0.00226, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.13037, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc), price=0.01348, price_inc_vat=0.01631, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.14894, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc), price=0.06533, price_inc_vat=0.07905, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.21168, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc), price=0.10385, price_inc_vat=0.12566, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25829, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc), price=0.11681, price_inc_vat=0.14134, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.27397, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc), price=0.12464, price_inc_vat=0.15082, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.28345, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc), price=0.12214, price_inc_vat=0.14779, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.28042, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc), price=0.11906, price_inc_vat=0.14407, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.2767, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 22, 0, tzinfo=datetime.timezone.utc), price=0.1113, price_inc_vat=0.13467, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.2673, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+    ),
+    'series': dict({
+      'invoice': list([
+        dict({
+          'price': 0.27238,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25995,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.26476,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25756,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25782,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25115,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25449,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25113,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25031,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.2387,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.20682,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.16689,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14238,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13178,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12963,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13037,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14894,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.21168,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25829,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.27397,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.28345,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.28042,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.2767,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.2673,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'market': list([
+        dict({
+          'price': 0.13975,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12732,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13213,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12493,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12519,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11852,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12186,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1185,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11768,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10607,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07419,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.03426,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.00975,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00085,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.003,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00226,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.01631,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07905,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12566,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14134,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.15082,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14779,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14407,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13467,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'market_excluding_vat': list([
+        dict({
+          'price': 0.11549,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10522,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1092,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10325,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10346,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09795,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10071,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09793,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09725,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.08766,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.06132,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.02832,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.00806,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00085,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.003,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00226,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.01348,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.06533,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10385,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11681,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12464,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12214,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11906,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1113,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'return': list([
+        dict({
+          'price': 0.13975,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12732,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13213,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12493,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12519,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11852,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12186,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1185,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11768,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10607,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07419,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.03426,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.00975,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00085,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.003,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00226,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.01631,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07905,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12566,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14134,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.15082,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14779,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14407,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13467,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'usage': list([
+        dict({
+          'price': 0.11549,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10522,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1092,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10325,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10346,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09795,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10071,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09793,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09725,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.08766,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.06132,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.02832,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.00806,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00085,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.003,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00226,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.01348,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.06533,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10385,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11681,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12464,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12214,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11906,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1113,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+    }),
+    'times': dict({
+      'highest_return': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+      'highest_usage': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+      'lowest_return': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+      'lowest_usage': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+    }),
+  })
+# ---
+# name: test_electricity_model_quarter_prices
+  dict({
+    'averages': dict({
+      'return': -0.00305,
+      'usage': -0.00305,
+    }),
+    'current': dict({
+      'invoice': 0.12959,
+      'market': -0.00304,
+      'market_excluding_vat': -0.00304,
+      'return': -0.00304,
+      'usage': -0.00304,
+    }),
+    'extremes': dict({
+      'return': tuple(
+        -0.00439,
+        -0.0021,
+      ),
+      'usage': tuple(
+        -0.00439,
+        -0.0021,
+      ),
+    }),
+    'intervals': tuple(
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 12, 15, tzinfo=datetime.timezone.utc), price=-0.0021, price_inc_vat=-0.0021, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.13053, average=0.0786, average_inc=0.09516, unit='kWh', granularity='quarter'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 12, 15, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 12, 30, tzinfo=datetime.timezone.utc), price=-0.00249, price_inc_vat=-0.00249, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.13014, average=0.0786, average_inc=0.09516, unit='kWh', granularity='quarter'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 12, 30, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc), price=-0.00304, price_inc_vat=-0.00304, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.12959, average=0.0786, average_inc=0.09516, unit='kWh', granularity='quarter'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc), price=-0.00439, price_inc_vat=-0.00439, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.12824, average=0.0786, average_inc=0.09516, unit='kWh', granularity='quarter'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 13, 15, tzinfo=datetime.timezone.utc), price=-0.00321, price_inc_vat=-0.00321, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.12942, average=0.0786, average_inc=0.09516, unit='kWh', granularity='quarter'),
+    ),
+    'series': dict({
+      'invoice': list([
+        dict({
+          'price': 0.13053,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13014,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 15, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12959,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 30, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12824,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12942,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'market': list([
+        dict({
+          'price': -0.0021,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00249,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 15, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00304,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 30, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00439,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00321,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'market_excluding_vat': list([
+        dict({
+          'price': -0.0021,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00249,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 15, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00304,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 30, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00439,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00321,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'return': list([
+        dict({
+          'price': -0.0021,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00249,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 15, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00304,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 30, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00439,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00321,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'usage': list([
+        dict({
+          'price': -0.0021,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00249,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 15, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00304,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 30, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00439,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00321,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+    }),
+    'times': dict({
+      'highest_return': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+      'highest_usage': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+      'lowest_return': FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc),
+      'lowest_usage': FakeDatetime(2026, 4, 19, 12, 45, tzinfo=datetime.timezone.utc),
+    }),
+  })
 # ---
 # name: test_electricity_model_usage
-  Electricity(usage_prices={FakeDatetime(2022, 12, 28, 22, 0, tzinfo=datetime.timezone.utc): 0.0234132, FakeDatetime(2022, 12, 28, 23, 0, tzinfo=datetime.timezone.utc): -0.0008829, FakeDatetime(2022, 12, 29, 0, 0, tzinfo=datetime.timezone.utc): -0.0009265, FakeDatetime(2022, 12, 29, 1, 0, tzinfo=datetime.timezone.utc): -0.001635, FakeDatetime(2022, 12, 29, 2, 0, tzinfo=datetime.timezone.utc): -0.0027686, FakeDatetime(2022, 12, 29, 3, 0, tzinfo=datetime.timezone.utc): -0.0021364, FakeDatetime(2022, 12, 29, 4, 0, tzinfo=datetime.timezone.utc): -0.0009701, FakeDatetime(2022, 12, 29, 5, 0, tzinfo=datetime.timezone.utc): -0.0006431, FakeDatetime(2022, 12, 29, 6, 0, tzinfo=datetime.timezone.utc): 9.81e-05, FakeDatetime(2022, 12, 29, 7, 0, tzinfo=datetime.timezone.utc): 0.0435673, FakeDatetime(2022, 12, 29, 8, 0, tzinfo=datetime.timezone.utc): 0.10464, FakeDatetime(2022, 12, 29, 9, 0, tzinfo=datetime.timezone.utc): 0.1190607, FakeDatetime(2022, 12, 29, 10, 0, tzinfo=datetime.timezone.utc): 0.1188427, FakeDatetime(2022, 12, 29, 11, 0, tzinfo=datetime.timezone.utc): 0.110417, FakeDatetime(2022, 12, 29, 12, 0, tzinfo=datetime.timezone.utc): 0.10464, FakeDatetime(2022, 12, 29, 13, 0, tzinfo=datetime.timezone.utc): 0.108891, FakeDatetime(2022, 12, 29, 14, 0, tzinfo=datetime.timezone.utc): 0.1199, FakeDatetime(2022, 12, 29, 15, 0, tzinfo=datetime.timezone.utc): 0.119791, FakeDatetime(2022, 12, 29, 16, 0, tzinfo=datetime.timezone.utc): 0.130909, FakeDatetime(2022, 12, 29, 17, 0, tzinfo=datetime.timezone.utc): 0.1334487, FakeDatetime(2022, 12, 29, 18, 0, tzinfo=datetime.timezone.utc): 0.1308763, FakeDatetime(2022, 12, 29, 19, 0, tzinfo=datetime.timezone.utc): 0.1308, FakeDatetime(2022, 12, 29, 20, 0, tzinfo=datetime.timezone.utc): 0.1141012, FakeDatetime(2022, 12, 29, 21, 0, tzinfo=datetime.timezone.utc): 0.0919306, FakeDatetime(2022, 12, 29, 22, 0, tzinfo=datetime.timezone.utc): 0.0399376}, return_prices={FakeDatetime(2022, 12, 28, 22, 0, tzinfo=datetime.timezone.utc): 0.02148, FakeDatetime(2022, 12, 28, 23, 0, tzinfo=datetime.timezone.utc): -0.00081, FakeDatetime(2022, 12, 29, 0, 0, tzinfo=datetime.timezone.utc): -0.00085, FakeDatetime(2022, 12, 29, 1, 0, tzinfo=datetime.timezone.utc): -0.0015, FakeDatetime(2022, 12, 29, 2, 0, tzinfo=datetime.timezone.utc): -0.00254, FakeDatetime(2022, 12, 29, 3, 0, tzinfo=datetime.timezone.utc): -0.00196, FakeDatetime(2022, 12, 29, 4, 0, tzinfo=datetime.timezone.utc): -0.00089, FakeDatetime(2022, 12, 29, 5, 0, tzinfo=datetime.timezone.utc): -0.00059, FakeDatetime(2022, 12, 29, 6, 0, tzinfo=datetime.timezone.utc): 9e-05, FakeDatetime(2022, 12, 29, 7, 0, tzinfo=datetime.timezone.utc): 0.03997, FakeDatetime(2022, 12, 29, 8, 0, tzinfo=datetime.timezone.utc): 0.096, FakeDatetime(2022, 12, 29, 9, 0, tzinfo=datetime.timezone.utc): 0.10923, FakeDatetime(2022, 12, 29, 10, 0, tzinfo=datetime.timezone.utc): 0.10903, FakeDatetime(2022, 12, 29, 11, 0, tzinfo=datetime.timezone.utc): 0.1013, FakeDatetime(2022, 12, 29, 12, 0, tzinfo=datetime.timezone.utc): 0.096, FakeDatetime(2022, 12, 29, 13, 0, tzinfo=datetime.timezone.utc): 0.0999, FakeDatetime(2022, 12, 29, 14, 0, tzinfo=datetime.timezone.utc): 0.11, FakeDatetime(2022, 12, 29, 15, 0, tzinfo=datetime.timezone.utc): 0.1099, FakeDatetime(2022, 12, 29, 16, 0, tzinfo=datetime.timezone.utc): 0.1201, FakeDatetime(2022, 12, 29, 17, 0, tzinfo=datetime.timezone.utc): 0.12243, FakeDatetime(2022, 12, 29, 18, 0, tzinfo=datetime.timezone.utc): 0.12007, FakeDatetime(2022, 12, 29, 19, 0, tzinfo=datetime.timezone.utc): 0.12, FakeDatetime(2022, 12, 29, 20, 0, tzinfo=datetime.timezone.utc): 0.10468, FakeDatetime(2022, 12, 29, 21, 0, tzinfo=datetime.timezone.utc): 0.08434, FakeDatetime(2022, 12, 29, 22, 0, tzinfo=datetime.timezone.utc): 0.03664})
-# ---
-# name: test_electricity_none_data
-  Electricity(usage_prices={datetime.datetime(2022, 12, 28, 22, 0, tzinfo=datetime.timezone.utc): 0.0234132, datetime.datetime(2022, 12, 28, 23, 0, tzinfo=datetime.timezone.utc): -0.0008829, datetime.datetime(2022, 12, 29, 0, 0, tzinfo=datetime.timezone.utc): -0.0009265, datetime.datetime(2022, 12, 29, 1, 0, tzinfo=datetime.timezone.utc): -0.001635, datetime.datetime(2022, 12, 29, 2, 0, tzinfo=datetime.timezone.utc): -0.0027686, datetime.datetime(2022, 12, 29, 3, 0, tzinfo=datetime.timezone.utc): -0.0021364, datetime.datetime(2022, 12, 29, 4, 0, tzinfo=datetime.timezone.utc): -0.0009701, datetime.datetime(2022, 12, 29, 5, 0, tzinfo=datetime.timezone.utc): -0.0006431, datetime.datetime(2022, 12, 29, 6, 0, tzinfo=datetime.timezone.utc): 9.81e-05, datetime.datetime(2022, 12, 29, 7, 0, tzinfo=datetime.timezone.utc): 0.0435673, datetime.datetime(2022, 12, 29, 8, 0, tzinfo=datetime.timezone.utc): 0.10464, datetime.datetime(2022, 12, 29, 9, 0, tzinfo=datetime.timezone.utc): 0.1190607, datetime.datetime(2022, 12, 29, 10, 0, tzinfo=datetime.timezone.utc): 0.1188427, datetime.datetime(2022, 12, 29, 11, 0, tzinfo=datetime.timezone.utc): 0.110417, datetime.datetime(2022, 12, 29, 12, 0, tzinfo=datetime.timezone.utc): 0.10464, datetime.datetime(2022, 12, 29, 13, 0, tzinfo=datetime.timezone.utc): 0.108891, datetime.datetime(2022, 12, 29, 14, 0, tzinfo=datetime.timezone.utc): 0.1199, datetime.datetime(2022, 12, 29, 15, 0, tzinfo=datetime.timezone.utc): 0.119791, datetime.datetime(2022, 12, 29, 16, 0, tzinfo=datetime.timezone.utc): 0.130909, datetime.datetime(2022, 12, 29, 17, 0, tzinfo=datetime.timezone.utc): 0.1334487, datetime.datetime(2022, 12, 29, 18, 0, tzinfo=datetime.timezone.utc): 0.1308763, datetime.datetime(2022, 12, 29, 19, 0, tzinfo=datetime.timezone.utc): 0.1308, datetime.datetime(2022, 12, 29, 20, 0, tzinfo=datetime.timezone.utc): 0.1141012, datetime.datetime(2022, 12, 29, 21, 0, tzinfo=datetime.timezone.utc): 0.0919306, datetime.datetime(2022, 12, 29, 22, 0, tzinfo=datetime.timezone.utc): 0.0399376}, return_prices={datetime.datetime(2022, 12, 28, 22, 0, tzinfo=datetime.timezone.utc): 0.02148, datetime.datetime(2022, 12, 28, 23, 0, tzinfo=datetime.timezone.utc): -0.00081, datetime.datetime(2022, 12, 29, 0, 0, tzinfo=datetime.timezone.utc): -0.00085, datetime.datetime(2022, 12, 29, 1, 0, tzinfo=datetime.timezone.utc): -0.0015, datetime.datetime(2022, 12, 29, 2, 0, tzinfo=datetime.timezone.utc): -0.00254, datetime.datetime(2022, 12, 29, 3, 0, tzinfo=datetime.timezone.utc): -0.00196, datetime.datetime(2022, 12, 29, 4, 0, tzinfo=datetime.timezone.utc): -0.00089, datetime.datetime(2022, 12, 29, 5, 0, tzinfo=datetime.timezone.utc): -0.00059, datetime.datetime(2022, 12, 29, 6, 0, tzinfo=datetime.timezone.utc): 9e-05, datetime.datetime(2022, 12, 29, 7, 0, tzinfo=datetime.timezone.utc): 0.03997, datetime.datetime(2022, 12, 29, 8, 0, tzinfo=datetime.timezone.utc): 0.096, datetime.datetime(2022, 12, 29, 9, 0, tzinfo=datetime.timezone.utc): 0.10923, datetime.datetime(2022, 12, 29, 10, 0, tzinfo=datetime.timezone.utc): 0.10903, datetime.datetime(2022, 12, 29, 11, 0, tzinfo=datetime.timezone.utc): 0.1013, datetime.datetime(2022, 12, 29, 12, 0, tzinfo=datetime.timezone.utc): 0.096, datetime.datetime(2022, 12, 29, 13, 0, tzinfo=datetime.timezone.utc): 0.0999, datetime.datetime(2022, 12, 29, 14, 0, tzinfo=datetime.timezone.utc): 0.11, datetime.datetime(2022, 12, 29, 15, 0, tzinfo=datetime.timezone.utc): 0.1099, datetime.datetime(2022, 12, 29, 16, 0, tzinfo=datetime.timezone.utc): 0.1201, datetime.datetime(2022, 12, 29, 17, 0, tzinfo=datetime.timezone.utc): 0.12243, datetime.datetime(2022, 12, 29, 18, 0, tzinfo=datetime.timezone.utc): 0.12007, datetime.datetime(2022, 12, 29, 19, 0, tzinfo=datetime.timezone.utc): 0.12, datetime.datetime(2022, 12, 29, 20, 0, tzinfo=datetime.timezone.utc): 0.10468, datetime.datetime(2022, 12, 29, 21, 0, tzinfo=datetime.timezone.utc): 0.08434, datetime.datetime(2022, 12, 29, 22, 0, tzinfo=datetime.timezone.utc): 0.03664})
+  dict({
+    'averages': dict({
+      'return': 0.09516,
+      'usage': 0.09516,
+    }),
+    'current': dict({
+      'invoice': 0.13037,
+      'market': -0.00226,
+      'market_excluding_vat': -0.00226,
+      'return': -0.00226,
+      'usage': -0.00226,
+    }),
+    'extremes': dict({
+      'return': tuple(
+        -0.003,
+        0.15082,
+      ),
+      'usage': tuple(
+        -0.003,
+        0.15082,
+      ),
+    }),
+    'intervals': tuple(
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc), price=0.11549, price_inc_vat=0.13975, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.27238, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc), price=0.10522, price_inc_vat=0.12732, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25995, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc), price=0.1092, price_inc_vat=0.13213, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.26476, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc), price=0.10325, price_inc_vat=0.12493, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25756, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc), price=0.10346, price_inc_vat=0.12519, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25782, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc), price=0.09795, price_inc_vat=0.11852, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25115, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc), price=0.10071, price_inc_vat=0.12186, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25449, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc), price=0.09793, price_inc_vat=0.1185, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25113, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc), price=0.09725, price_inc_vat=0.11768, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25031, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc), price=0.08766, price_inc_vat=0.10607, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.2387, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc), price=0.06132, price_inc_vat=0.07419, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.20682, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc), price=0.02832, price_inc_vat=0.03426, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.16689, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc), price=0.00806, price_inc_vat=0.00975, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.14238, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc), price=-0.00085, price_inc_vat=-0.00085, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.13178, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc), price=-0.003, price_inc_vat=-0.003, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.12963, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc), price=-0.00226, price_inc_vat=-0.00226, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.13037, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc), price=0.01348, price_inc_vat=0.01631, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.14894, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc), price=0.06533, price_inc_vat=0.07905, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.21168, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc), price=0.10385, price_inc_vat=0.12566, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.25829, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc), price=0.11681, price_inc_vat=0.14134, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.27397, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc), price=0.12464, price_inc_vat=0.15082, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.28345, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc), price=0.12214, price_inc_vat=0.14779, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.28042, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc), price=0.11906, price_inc_vat=0.14407, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.2767, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 19, 22, 0, tzinfo=datetime.timezone.utc), price=0.1113, price_inc_vat=0.13467, energy_tax=0.11085, purchase_price=0.02178, invoice_price=0.2673, average=0.0786, average_inc=0.09516, unit='kWh', granularity='hour'),
+    ),
+    'series': dict({
+      'invoice': list([
+        dict({
+          'price': 0.27238,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25995,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.26476,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25756,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25782,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25115,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25449,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25113,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25031,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.2387,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.20682,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.16689,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14238,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13178,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12963,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13037,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14894,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.21168,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.25829,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.27397,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.28345,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.28042,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.2767,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.2673,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'market': list([
+        dict({
+          'price': 0.13975,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12732,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13213,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12493,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12519,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11852,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12186,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1185,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11768,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10607,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07419,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.03426,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.00975,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00085,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.003,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00226,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.01631,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07905,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12566,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14134,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.15082,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14779,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14407,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13467,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'market_excluding_vat': list([
+        dict({
+          'price': 0.11549,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10522,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1092,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10325,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10346,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09795,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10071,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09793,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.09725,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.08766,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.06132,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.02832,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.00806,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00085,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.003,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00226,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.01348,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.06533,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10385,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11681,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12464,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12214,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11906,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1113,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'return': list([
+        dict({
+          'price': 0.13975,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12732,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13213,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12493,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12519,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11852,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12186,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1185,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11768,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10607,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07419,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.03426,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.00975,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00085,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.003,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00226,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.01631,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07905,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12566,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14134,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.15082,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14779,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14407,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13467,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+      'usage': list([
+        dict({
+          'price': 0.13975,
+          'timestamp': FakeDatetime(2026, 4, 18, 22, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12732,
+          'timestamp': FakeDatetime(2026, 4, 18, 23, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13213,
+          'timestamp': FakeDatetime(2026, 4, 19, 0, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12493,
+          'timestamp': FakeDatetime(2026, 4, 19, 1, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12519,
+          'timestamp': FakeDatetime(2026, 4, 19, 2, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11852,
+          'timestamp': FakeDatetime(2026, 4, 19, 3, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12186,
+          'timestamp': FakeDatetime(2026, 4, 19, 4, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.1185,
+          'timestamp': FakeDatetime(2026, 4, 19, 5, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.11768,
+          'timestamp': FakeDatetime(2026, 4, 19, 6, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.10607,
+          'timestamp': FakeDatetime(2026, 4, 19, 7, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07419,
+          'timestamp': FakeDatetime(2026, 4, 19, 8, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.03426,
+          'timestamp': FakeDatetime(2026, 4, 19, 9, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.00975,
+          'timestamp': FakeDatetime(2026, 4, 19, 10, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00085,
+          'timestamp': FakeDatetime(2026, 4, 19, 11, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.003,
+          'timestamp': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': -0.00226,
+          'timestamp': FakeDatetime(2026, 4, 19, 13, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.01631,
+          'timestamp': FakeDatetime(2026, 4, 19, 14, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.07905,
+          'timestamp': FakeDatetime(2026, 4, 19, 15, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.12566,
+          'timestamp': FakeDatetime(2026, 4, 19, 16, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14134,
+          'timestamp': FakeDatetime(2026, 4, 19, 17, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.15082,
+          'timestamp': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14779,
+          'timestamp': FakeDatetime(2026, 4, 19, 19, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.14407,
+          'timestamp': FakeDatetime(2026, 4, 19, 20, 0, tzinfo=datetime.timezone.utc),
+        }),
+        dict({
+          'price': 0.13467,
+          'timestamp': FakeDatetime(2026, 4, 19, 21, 0, tzinfo=datetime.timezone.utc),
+        }),
+      ]),
+    }),
+    'times': dict({
+      'highest_return': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+      'highest_usage': FakeDatetime(2026, 4, 19, 18, 0, tzinfo=datetime.timezone.utc),
+      'lowest_return': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+      'lowest_usage': FakeDatetime(2026, 4, 19, 12, 0, tzinfo=datetime.timezone.utc),
+    }),
+  })
 # ---
 # name: test_gas_model
-  Gas(prices={FakeDatetime(2022, 12, 13, 22, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 13, 23, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 0, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 1, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 2, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 3, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 4, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 5, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 6, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 7, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 8, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 9, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 10, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 11, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 12, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 13, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 14, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 15, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 16, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 17, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 18, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 19, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 20, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 21, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 22, 0, tzinfo=datetime.timezone.utc): 1.485343})
-# ---
-# name: test_gas_morning_model
-  Gas(prices={FakeDatetime(2022, 12, 13, 22, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 13, 23, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 0, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 1, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 2, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 3, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 4, 0, tzinfo=datetime.timezone.utc): 1.4645022, FakeDatetime(2022, 12, 14, 5, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 6, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 7, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 8, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 9, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 10, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 11, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 12, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 13, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 14, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 15, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 16, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 17, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 18, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 19, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 20, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 21, 0, tzinfo=datetime.timezone.utc): 1.485343, FakeDatetime(2022, 12, 14, 22, 0, tzinfo=datetime.timezone.utc): 1.485343})
-# ---
-# name: test_gas_none_data
-  Gas(prices={datetime.datetime(2022, 12, 13, 22, 0, tzinfo=datetime.timezone.utc): 1.4645022, datetime.datetime(2022, 12, 13, 23, 0, tzinfo=datetime.timezone.utc): 1.4645022, datetime.datetime(2022, 12, 14, 0, 0, tzinfo=datetime.timezone.utc): 1.4645022, datetime.datetime(2022, 12, 14, 1, 0, tzinfo=datetime.timezone.utc): 1.4645022, datetime.datetime(2022, 12, 14, 2, 0, tzinfo=datetime.timezone.utc): 1.4645022, datetime.datetime(2022, 12, 14, 3, 0, tzinfo=datetime.timezone.utc): 1.4645022, datetime.datetime(2022, 12, 14, 4, 0, tzinfo=datetime.timezone.utc): 1.4645022, datetime.datetime(2022, 12, 14, 5, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 6, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 7, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 8, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 9, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 10, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 11, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 12, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 13, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 14, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 15, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 16, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 17, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 18, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 19, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 20, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 21, 0, tzinfo=datetime.timezone.utc): 1.485343, datetime.datetime(2022, 12, 14, 22, 0, tzinfo=datetime.timezone.utc): 1.485343})
+  dict({
+    'average_price': 0.59776,
+    'current_price': 0.57862,
+    'extremes': tuple(
+      0.57862,
+      0.6169,
+    ),
+    'intervals': tuple(
+      PriceInterval(starts_at=FakeDatetime(2026, 3, 31, 22, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 1, 22, 0, tzinfo=datetime.timezone.utc), price=0.50983, price_inc_vat=0.6169, energy_tax=0.7268, purchase_price=0.079, invoice_price=1.4227, average=0.49402, average_inc=0.59776, unit='m3', granularity='day'),
+      PriceInterval(starts_at=FakeDatetime(2026, 4, 1, 22, 0, tzinfo=datetime.timezone.utc), ends_at=FakeDatetime(2026, 4, 2, 22, 0, tzinfo=datetime.timezone.utc), price=0.4782, price_inc_vat=0.57862, energy_tax=0.7268, purchase_price=0.079, invoice_price=1.38442, average=0.49402, average_inc=0.59776, unit='m3', granularity='day'),
+    ),
+    'series': list([
+      dict({
+        'price': 0.6169,
+        'timestamp': FakeDatetime(2026, 3, 31, 22, 0, tzinfo=datetime.timezone.utc),
+      }),
+      dict({
+        'price': 0.57862,
+        'timestamp': FakeDatetime(2026, 4, 1, 22, 0, tzinfo=datetime.timezone.utc),
+      }),
+    ]),
+  })
 # ---

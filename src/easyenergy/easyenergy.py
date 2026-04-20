@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import socket
 from dataclasses import dataclass
-from datetime import UTC, date, datetime, timedelta
+from datetime import date, timedelta
 from importlib import metadata
 from typing import Any, Self
 
@@ -13,7 +13,12 @@ from aiohttp.client import ClientError, ClientSession
 from aiohttp.hdrs import METH_GET
 from yarl import URL
 
-from .const import API_HOST, VatOption
+from .const import (
+    API_HOST,
+    API_PATH,
+    ElectricityGranularity,
+    VatOption,
+)
 from .exceptions import (
     EasyEnergyConnectionError,
     EasyEnergyError,
@@ -33,7 +38,7 @@ class EasyEnergy:
     session: ClientSession | None = None
 
     _close_session: bool = False
-    _base_url = URL(API_HOST)
+    _base_url = URL.build(scheme="https", host=API_HOST, path=API_PATH)
 
     async def _request(
         self,
@@ -62,14 +67,10 @@ class EasyEnergy:
                 the API.
 
         """
-        url = URL.build(
-            scheme="https",
-            host=API_HOST,
-            path="/nl/api/tariff/",
-        ).join(URL(uri))
+        url = self._base_url.join(URL(uri))
 
         headers = {
-            "Accept": "application/json, text/plain",
+            "Accept": "application/json",
             "User-Agent": f"PythonEasyEnergy/{VERSION}",
         }
 
@@ -84,7 +85,6 @@ class EasyEnergy:
                     url,
                     params=params,
                     headers=headers,
-                    ssl=False,
                 )
                 response.raise_for_status()
         except TimeoutError as exception:
@@ -104,6 +104,35 @@ class EasyEnergy:
             )
 
         return await response.json()
+
+    def _price_key(self, vat: VatOption | None) -> str:
+        """Return the response field matching the VAT preference."""
+        vat_option = vat if vat is not None else self.vat
+        return "priceIncVat" if vat_option == VatOption.INCLUDE else "price"
+
+    async def _prices(
+        self,
+        *,
+        start_date: date,
+        end_date: date,
+        commodity_type: str,
+        granularity: str,
+    ) -> list[dict[str, Any]]:
+        """Fetch prices from the new price graph API."""
+        data = await self._request(
+            "prices",
+            params={
+                "start": start_date.isoformat(),
+                "end": (end_date + timedelta(days=1)).isoformat(),
+                "type": commodity_type,
+                "granularity": granularity,
+            },
+        )
+
+        if not isinstance(data, dict) or not isinstance(data.get("prices"), list):
+            msg = "Unexpected response structure from the easyEnergy API"
+            raise EasyEnergyError(msg, data)
+        return data["prices"]
 
     async def gas_prices(
         self,
@@ -128,70 +157,24 @@ class EasyEnergy:
             EasyEnergyNoDataError: No gas prices found for this period.
 
         """
-        local_tz = datetime.now(UTC).astimezone().tzinfo
-        now: datetime = datetime.now(tz=local_tz)
-
-        if now.hour >= 6 and now.hour <= 23:
-            # Set start_date to 06:00:00 and the end_date to 06:00:00 next day
-            # Convert to UTC time 04:00:00 and 04:00:00 next day
-            utc_start_date = datetime(
-                start_date.year,
-                start_date.month,
-                start_date.day,
-                6,
-                0,
-                0,
-                tzinfo=local_tz,
-            ).astimezone(UTC)
-            utc_end_date = datetime(
-                end_date.year,
-                end_date.month,
-                end_date.day,
-                6,
-                0,
-                0,
-                tzinfo=local_tz,
-            ).astimezone(UTC) + timedelta(days=1)
-        else:
-            # Set start_date to 06:00:00 prev day and the end_date to 06:00:00
-            # Convert to UTC time 04:00:00 prev day and 04:00:00 current day
-            utc_start_date = datetime(
-                start_date.year,
-                start_date.month,
-                start_date.day,
-                6,
-                0,
-                0,
-                tzinfo=local_tz,
-            ).astimezone(UTC) - timedelta(days=1)
-            utc_end_date = datetime(
-                end_date.year,
-                end_date.month,
-                end_date.day,
-                6,
-                0,
-                0,
-                tzinfo=local_tz,
-            ).astimezone(UTC)
-        data = await self._request(
-            "getlebatariffs",
-            params={
-                "startTimestamp": utc_start_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                "endTimestamp": utc_end_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                "includeVat": vat.value if vat is not None else self.vat.value,
-            },
+        data = await self._prices(
+            start_date=start_date,
+            end_date=end_date,
+            commodity_type="gas",
+            granularity="day",
         )
 
         if len(data) == 0:
             msg = "No gas prices found for this period."
             raise EasyEnergyNoDataError(msg)
-        return Gas.from_dict(data)
+        return Gas.from_dict(data, price_key=self._price_key(vat))
 
     async def energy_prices(
         self,
         start_date: date,
         end_date: date,
         vat: VatOption | None = None,
+        granularity: ElectricityGranularity = ElectricityGranularity.HOUR,
     ) -> Electricity:
         """Get energy prices for a given period.
 
@@ -200,6 +183,7 @@ class EasyEnergy:
             start_date: Start date of the period.
             end_date: End date of the period.
             vat: Include or exclude VAT from the prices.
+            granularity: The electricity price granularity to request.
 
         Returns:
         -------
@@ -210,39 +194,21 @@ class EasyEnergy:
             EasyEnergyNoDataError: No energy prices found for this period.
 
         """
-        local_tz = datetime.now(UTC).astimezone().tzinfo
-        # Set start_date to 00:00:00 and the end_date to 00:00:00 and convert to UTC
-        utc_start_date: datetime = datetime(
-            start_date.year,
-            start_date.month,
-            start_date.day,
-            0,
-            0,
-            0,
-            tzinfo=local_tz,
-        ).astimezone(UTC)
-        utc_end_date: datetime = datetime(
-            end_date.year,
-            end_date.month,
-            end_date.day,
-            0,
-            0,
-            0,
-            tzinfo=local_tz,
-        ).astimezone(UTC) + timedelta(days=1)
-        data = await self._request(
-            "getapxtariffs",
-            params={
-                "startTimestamp": utc_start_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                "endTimestamp": utc_end_date.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
-                "includeVat": vat.value if vat is not None else self.vat.value,
-            },
+        data = await self._prices(
+            start_date=start_date,
+            end_date=end_date,
+            commodity_type="electricity",
+            granularity=granularity.value,
         )
 
         if len(data) == 0:
             msg = "No energy prices found for this period."
             raise EasyEnergyNoDataError(msg)
-        return Electricity.from_dict(data)
+        return Electricity.from_dict(
+            data,
+            price_key=self._price_key(vat),
+            return_price_key="priceIncVat",
+        )
 
     async def close(self) -> None:
         """Close open client session."""

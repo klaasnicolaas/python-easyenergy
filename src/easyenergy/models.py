@@ -2,423 +2,454 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta
-from typing import Any
+from abc import ABC
+from bisect import bisect_left, bisect_right
+from dataclasses import dataclass, field
+from datetime import UTC, datetime
+from functools import cached_property
+from typing import TYPE_CHECKING, Any, Self
+
+from mashumaro import field_options
+from mashumaro.mixins.dict import DataClassDictMixin
+
+from .const import MARKET_TIMEZONE
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
+
+_PRICE_FIELD_MAP: Mapping[str, str] = {
+    "price": "price",
+    "priceIncVat": "price_inc_vat",
+    "energyTax": "energy_tax",
+    "purchasePrice": "purchase_price",
+    "invoicePrice": "invoice_price",
+    "average": "average",
+    "averageInc": "average_inc",
+}
 
 
-def _timed_value(moment: datetime, prices: dict[datetime, float]) -> float | None:
-    """Return a function that returns a value at a specific time.
+def _normalize_timestamp(value: str) -> str:
+    """Normalize the API timestamp to a Python compatible ISO string."""
+    if value.endswith("Z"):
+        value = f"{value[:-1]}+00:00"
 
-    Args:
-    ----
-        moment: The time to get the value for.
-        prices: A dictionary with market prices.
+    if "." not in value:
+        return value
 
-    Returns:
-    -------
-        The value at the specific time.
+    head, rest = value.split(".", maxsplit=1)
+    suffix_index = rest.find("+")
+    if suffix_index == -1:
+        suffix_index = rest.find("-")
 
-    """
-    value = None
-    for timestamp, price in prices.items():
-        future_dt = timestamp + timedelta(hours=1)
-        if timestamp <= moment < future_dt:
-            value = round(price, 5)
-    return value
+    if suffix_index == -1:
+        fraction = rest
+        suffix = ""
+    else:
+        fraction = rest[:suffix_index]
+        suffix = rest[suffix_index:]
+
+    return f"{head}.{fraction[:6]}{suffix}"
 
 
-def _get_pricetime(
+def _parse_timestamp(value: str) -> datetime:
+    """Parse an API timestamp and normalize it to UTC."""
+    timestamp = datetime.fromisoformat(_normalize_timestamp(value))
+    if timestamp.tzinfo is None:
+        timestamp = timestamp.replace(tzinfo=MARKET_TIMEZONE)
+    return timestamp.astimezone(UTC)
+
+
+def _normalize_moment(moment: datetime) -> datetime:
+    """Normalize a provided datetime to UTC."""
+    if moment.tzinfo is None:
+        return moment.replace(tzinfo=UTC)
+    return moment.astimezone(UTC)
+
+
+def _timed_value(
+    moment: datetime,
     prices: dict[datetime, float],
+    price_ends: dict[datetime, datetime],
+    interval_starts: tuple[datetime, ...],
+) -> float | None:
+    """Return the value for a specific timestamp."""
+    current_moment = _normalize_moment(moment)
+    interval_index = bisect_right(interval_starts, current_moment) - 1
+    if interval_index < 0:
+        return None
+
+    timestamp = interval_starts[interval_index]
+    if current_moment < price_ends[timestamp]:
+        return round(prices[timestamp], 5)
+    return None
+
+
+@dataclass(frozen=True, slots=True)
+class _PriceSeriesAnalysis:
+    """Cached derived data for a price series."""
+
+    extreme_prices: tuple[float, float]
+    average_price: float
+    highest_price_time: datetime
+    lowest_price_time: datetime
+    timestamp_prices: list[dict[str, float | datetime]]
+    sorted_values: tuple[float, ...]
+
+    def count_equal_or_lower(self, price: float) -> int:
+        """Return the number of prices equal to or below a value."""
+        return bisect_right(self.sorted_values, price)
+
+    def count_equal_or_higher(self, price: float) -> int:
+        """Return the number of prices equal to or above a value."""
+        return len(self.sorted_values) - bisect_left(self.sorted_values, price)
+
+
+def _analyze_prices(prices: dict[datetime, float]) -> _PriceSeriesAnalysis:
+    """Return cached statistics for a price series."""
+    iterator = iter(prices.items())
+    first_timestamp, first_price = next(iterator)
+
+    lowest_time = highest_time = first_timestamp
+    lowest_price = highest_price = first_price
+    total = first_price
+    values = [first_price]
+    timestamp_prices = [{"timestamp": first_timestamp, "price": round(first_price, 5)}]
+
+    for timestamp, price in iterator:
+        total += price
+        values.append(price)
+        timestamp_prices.append({"timestamp": timestamp, "price": round(price, 5)})
+
+        if price < lowest_price:
+            lowest_price = price
+            lowest_time = timestamp
+
+        if price > highest_price:
+            highest_price = price
+            highest_time = timestamp
+
+    return _PriceSeriesAnalysis(
+        extreme_prices=(round(lowest_price, 5), round(highest_price, 5)),
+        average_price=round(total / len(values), 5),
+        highest_price_time=highest_time,
+        lowest_price_time=lowest_time,
+        timestamp_prices=timestamp_prices,
+        sorted_values=tuple(sorted(values)),
+    )
+
+
+def _interval_starts(intervals: tuple[PriceInterval, ...]) -> tuple[datetime, ...]:
+    """Return sorted interval start timestamps for fast lookups."""
+    return tuple(interval.starts_at for interval in intervals)
+
+
+@dataclass(frozen=True, slots=True)
+class PriceInterval(DataClassDictMixin):  # pylint: disable=too-many-instance-attributes
+    """Single interval from the easyEnergy price API."""
+
+    starts_at: datetime = field(
+        metadata=field_options(alias="from", deserialize=_parse_timestamp),
+    )
+    ends_at: datetime = field(
+        metadata=field_options(alias="until", deserialize=_parse_timestamp),
+    )
+    price: float
+    price_inc_vat: float = field(metadata=field_options(alias="priceIncVat"))
+    energy_tax: float = field(metadata=field_options(alias="energyTax"))
+    purchase_price: float = field(metadata=field_options(alias="purchasePrice"))
+    invoice_price: float = field(metadata=field_options(alias="invoicePrice"))
+    average: float
+    average_inc: float = field(metadata=field_options(alias="averageInc"))
+    unit: str
+    granularity: str
+
+    def value_for(self, price_key: str) -> float:
+        """Return the requested price component for this interval."""
+        return getattr(self, _PRICE_FIELD_MAP[price_key])
+
+
+def _parse_price_data(
+    data: list[dict[str, Any]],
     *,
-    highest: bool,
-) -> datetime:
-    """Return the time of the price.
-
-    Args:
-    ----
-        prices: A dictionary with market prices.
-        highest: Whether to return the highest or lowest price timestamp.
-
-    Returns:
-    -------
-        The time of the price.
-
-    """
-    selector = max if highest else min
-    return selector(prices, key=prices.__getitem__)
+    price_key: str,
+) -> tuple[tuple[PriceInterval, ...], dict[datetime, float], dict[datetime, datetime]]:
+    """Parse price intervals and the selected price series from the new API payload."""
+    intervals = tuple(
+        sorted(
+            (PriceInterval.from_dict(item) for item in data),
+            key=lambda interval: interval.starts_at,
+        ),
+    )
+    return (
+        intervals,
+        {interval.starts_at: interval.value_for(price_key) for interval in intervals},
+        {interval.starts_at: interval.ends_at for interval in intervals},
+    )
 
 
-def _generate_timestamp_list(
-    prices: dict[datetime, float],
-) -> list[dict[str, float | datetime]]:
-    """Return a list of dictionaries with the prices and timestamps.
-
-    Args:
-    ----
-        prices: A dictionary with the prices.
-
-    Returns:
-    -------
-        A list of dictionaries with the prices and timestamps.
-
-    """
-    return [
-        {"timestamp": timestamp, "price": round(price, 5)}
-        for timestamp, price in prices.items()
-    ]
+def _series_from_intervals(
+    intervals: tuple[PriceInterval, ...],
+    *,
+    price_key: str,
+) -> dict[datetime, float]:
+    """Build a price series for a specific interval price component."""
+    return {interval.starts_at: interval.value_for(price_key) for interval in intervals}
 
 
 @dataclass
-class Electricity:
-    """Object representing electricity data."""
+class EnergyPrices(ABC):
+    """Base class for energy price data."""
 
-    usage_prices: dict[datetime, float]
-    return_prices: dict[datetime, float]
+    intervals: tuple[PriceInterval, ...]
+    prices: dict[datetime, float]
+    price_ends: dict[datetime, datetime]
+
+    @cached_property
+    def _interval_starts(self) -> tuple[datetime, ...]:
+        """Return interval starts for fast point-in-time lookups."""
+        return _interval_starts(self.intervals)
+
+    @cached_property
+    def _price_analysis(self) -> _PriceSeriesAnalysis:
+        """Return cached analytics for the primary prices."""
+        return _analyze_prices(self.prices)
 
     @property
-    def current_usage_price(self) -> float | None:
-        """Return the price for the current hour.
+    def current_price(self) -> float | None:
+        """Return the price for the current interval."""
+        return self.price_at_time(datetime.now(UTC))
 
-        Returns
-        -------
-            The price for the current hour.
+    @property
+    def extreme_prices(self) -> tuple[float, float]:
+        """Return the minimum and maximum price."""
+        return self._price_analysis.extreme_prices
 
-        """
-        return self.price_at_time(self.utcnow())
+    @property
+    def average_price(self) -> float:
+        """Return the average price."""
+        return self._price_analysis.average_price
+
+    @property
+    def highest_price_time(self) -> datetime:
+        """Return the time of the highest price."""
+        return self._price_analysis.highest_price_time
+
+    @property
+    def lowest_price_time(self) -> datetime:
+        """Return the time of the lowest price."""
+        return self._price_analysis.lowest_price_time
+
+    @property
+    def timestamp_prices(self) -> list[dict[str, float | datetime]]:
+        """Return a list of timestamps and prices."""
+        return self._price_analysis.timestamp_prices
+
+    def price_at_time(self, moment: datetime) -> float | None:
+        """Return the price at a specific time."""
+        return _timed_value(moment, self.prices, self.price_ends, self._interval_starts)
+
+
+@dataclass
+class Electricity(EnergyPrices):  # pylint: disable=too-many-public-methods
+    """Object representing electricity data."""
+
+    _return_prices: dict[datetime, float] = field(default_factory=dict)
+
+    @cached_property
+    def _return_analysis(self) -> _PriceSeriesAnalysis:
+        """Return cached analytics for return prices."""
+        return _analyze_prices(self.return_prices)
+
+    @cached_property
+    def market_prices_excluding_vat(self) -> dict[datetime, float]:
+        """Return the market electricity prices without VAT."""
+        return _series_from_intervals(self.intervals, price_key="price")
+
+    @cached_property
+    def _market_prices_excluding_vat_analysis(self) -> _PriceSeriesAnalysis:
+        return _analyze_prices(self.market_prices_excluding_vat)
+
+    @cached_property
+    def market_prices_including_vat(self) -> dict[datetime, float]:
+        """Return the market electricity prices including VAT."""
+        return _series_from_intervals(self.intervals, price_key="priceIncVat")
+
+    @cached_property
+    def _market_prices_analysis(self) -> _PriceSeriesAnalysis:
+        return _analyze_prices(self.market_prices)
+
+    @property
+    def market_prices(self) -> dict[datetime, float]:
+        """Return the market electricity prices including VAT."""
+        return self.market_prices_including_vat
+
+    @cached_property
+    def invoice_prices(self) -> dict[datetime, float]:
+        """Return the billed electricity invoice prices."""
+        return _series_from_intervals(self.intervals, price_key="invoicePrice")
+
+    @cached_property
+    def _invoice_prices_analysis(self) -> _PriceSeriesAnalysis:
+        return _analyze_prices(self.invoice_prices)
+
+    @property
+    def return_prices(self) -> dict[datetime, float]:
+        """Return the electricity return prices (VAT-inclusive)."""
+        return self._return_prices
+
+    @property
+    def current_market_price_excluding_vat(self) -> float | None:
+        """Return the market price without VAT for the current interval."""
+        return _timed_value(
+            datetime.now(UTC),
+            self.market_prices_excluding_vat,
+            self.price_ends,
+            self._interval_starts,
+        )
+
+    @property
+    def current_market_price(self) -> float | None:
+        """Return the market price including VAT for the current interval."""
+        return _timed_value(
+            datetime.now(UTC),
+            self.market_prices,
+            self.price_ends,
+            self._interval_starts,
+        )
+
+    @property
+    def current_invoice_price(self) -> float | None:
+        """Return the invoice price for the current interval."""
+        return _timed_value(
+            datetime.now(UTC),
+            self.invoice_prices,
+            self.price_ends,
+            self._interval_starts,
+        )
 
     @property
     def current_return_price(self) -> float | None:
-        """Return the price for the current hour.
-
-        Returns
-        -------
-            The price for the current hour.
-
-        """
-        return self.price_at_time(self.utcnow(), data_type="return")
-
-    @property
-    def extreme_usage_prices(self) -> tuple[float, float]:
-        """Return the minimum and maximum price for usage.
-
-        Returns
-        -------
-            The minimum and maximum price for usage.
-
-        """
-        return round(min(self.usage_prices.values()), 5), round(
-            max(self.usage_prices.values()),
-            5,
+        """Return the return price for the current interval."""
+        return _timed_value(
+            datetime.now(UTC),
+            self.return_prices,
+            self.price_ends,
+            self._interval_starts,
         )
 
     @property
     def extreme_return_prices(self) -> tuple[float, float]:
-        """Return the minimum and maximum price for return.
-
-        Returns
-        -------
-            The minimum and maximum price for return.
-
-        """
-        return round(min(self.return_prices.values()), 5), round(
-            max(self.return_prices.values()),
-            5,
-        )
-
-    @property
-    def average_usage_price(self) -> float:
-        """Return the average price for usage.
-
-        Returns
-        -------
-            The average price for usage.
-
-        """
-        return round(sum(self.usage_prices.values()) / len(self.usage_prices), 5)
+        """Return the minimum and maximum return price."""
+        return self._return_analysis.extreme_prices
 
     @property
     def average_return_price(self) -> float:
-        """Return the average price for return.
-
-        Returns
-        -------
-            The average price for return.
-
-        """
-        return round(sum(self.return_prices.values()) / len(self.return_prices), 5)
-
-    @property
-    def highest_usage_price_time(self) -> datetime:
-        """Return the time of the highest price for usage.
-
-        Returns
-        -------
-            The time of the highest price for usage.
-
-        """
-        return _get_pricetime(self.usage_prices, highest=True)
+        """Return the average return price."""
+        return self._return_analysis.average_price
 
     @property
     def highest_return_price_time(self) -> datetime:
-        """Return the time of the highest price for return.
-
-        Returns
-        -------
-            The time of the highest price for return.
-
-        """
-        return _get_pricetime(self.return_prices, highest=True)
-
-    @property
-    def lowest_usage_price_time(self) -> datetime:
-        """Return the time of the lowest price for usage.
-
-        Returns
-        -------
-            The time of the lowest price for usage.
-
-        """
-        return _get_pricetime(self.usage_prices, highest=False)
+        """Return the time of the highest return price."""
+        return self._return_analysis.highest_price_time
 
     @property
     def lowest_return_price_time(self) -> datetime:
-        """Return the time of the lowest price for return.
-
-        Returns
-        -------
-            The time of the lowest price for return.
-
-        """
-        return _get_pricetime(self.return_prices, highest=False)
+        """Return the time of the lowest return price."""
+        return self._return_analysis.lowest_price_time
 
     @property
-    def pct_of_max_usage(self) -> float:
-        """Return the percentage of the current price for usage.
-
-        Returns
-        -------
-            The percentage of the current price for usage.
-
-        """
-        current = self.current_usage_price or 0
-        return round(current / self.extreme_usage_prices[1] * 100, 2)
+    def pct_of_max(self) -> float:
+        """Return the current price as percentage of maximum."""
+        current = self.current_price or 0
+        return round(current / self.extreme_prices[1] * 100, 2)
 
     @property
     def pct_of_max_return(self) -> float:
-        """Return the percentage of the current price for return.
-
-        Returns
-        -------
-            The percentage of the current price for return.
-
-        """
+        """Return the current return price as percentage of maximum."""
         current = self.current_return_price or 0
         return round(current / self.extreme_return_prices[1] * 100, 2)
 
+    def return_price_at_time(self, moment: datetime) -> float | None:
+        """Return the return price at a specific time."""
+        return _timed_value(
+            moment, self.return_prices, self.price_ends, self._interval_starts
+        )
+
     @property
-    def timestamp_usage_prices(self) -> list[dict[str, float | datetime]]:
-        """Return a dictionary with the prices for usage.
+    def timestamp_market_prices_excluding_vat(
+        self,
+    ) -> list[dict[str, float | datetime]]:
+        """Return timestamps and market prices without VAT."""
+        return self._market_prices_excluding_vat_analysis.timestamp_prices
 
-        Returns
-        -------
-            A dictionary with the prices for usage.
+    @property
+    def timestamp_market_prices(self) -> list[dict[str, float | datetime]]:
+        """Return timestamps and market prices including VAT."""
+        return self._market_prices_analysis.timestamp_prices
 
-        """
-        return _generate_timestamp_list(self.usage_prices)
+    @property
+    def timestamp_invoice_prices(self) -> list[dict[str, float | datetime]]:
+        """Return timestamps and invoice prices."""
+        return self._invoice_prices_analysis.timestamp_prices
 
     @property
     def timestamp_return_prices(self) -> list[dict[str, float | datetime]]:
-        """Return a dictionary with the prices for return.
-
-        Returns
-        -------
-            A dictionary with the prices for return.
-
-        """
-        return _generate_timestamp_list(self.return_prices)
+        """Return timestamps and return prices."""
+        return self._return_analysis.timestamp_prices
 
     @property
-    def hours_priced_equal_or_lower_usage(self) -> int:
-        """Return the number of hours with the current price or lower for usage.
-
-        Returns
-        -------
-            The number of hours with the current price or lower for usage.
-
-        """
-        current: float = self.current_usage_price or 0
-        return sum(price <= current for price in self.usage_prices.values())
+    def periods_priced_equal_or_lower(self) -> int:
+        """Return the number of intervals with the current price or lower."""
+        current: float = self.current_price or 0
+        return self._price_analysis.count_equal_or_lower(current)
 
     @property
-    def hours_priced_equal_or_higher_return(self) -> int:
-        """Return the number of hours with the current price or higher for return.
+    def periods_priced_equal_or_higher(self) -> int:
+        """Return the number of intervals with the current price or higher."""
+        current: float = self.current_price or 0
+        return self._price_analysis.count_equal_or_higher(current)
 
-        Returns
-        -------
-            The number of hours with the current price or higher for return.
-
-        """
+    @property
+    def return_periods_priced_equal_or_higher(self) -> int:
+        """Return the number of intervals with the current return price or higher."""
         current: float = self.current_return_price or 0
-        return sum(price >= current for price in self.return_prices.values())
-
-    def utcnow(self) -> datetime:
-        """Return the current timestamp in the UTC timezone.
-
-        Returns
-        -------
-            The current timestamp in the UTC timezone.
-
-        """
-        return datetime.now(UTC)
-
-    def price_at_time(self, moment: datetime, data_type: str = "usage") -> float | None:
-        """Return the price at a specific time.
-
-        Args:
-        ----
-            moment: The time to get the price for.
-            data_type: The type of data to get the price for.
-                Can be "usage" (default) or "return".
-
-        Returns:
-        -------
-            The price at the specified time.
-
-        """
-        # Set the correct data list
-        data_list = self.return_prices if data_type == "return" else self.usage_prices
-
-        # Get the price at the specified time
-        value = _timed_value(moment, data_list)
-        if value is not None or value == 0:
-            return value
-        return None
+        return self._return_analysis.count_equal_or_higher(current)
 
     @classmethod
-    def from_dict(cls: type[Electricity], data: list[dict[str, Any]]) -> Electricity:
-        """Create an Electricity object from a dictionary.
-
-        Args:
-        ----
-            data: A dictionary with the data from the API.
-
-        Returns:
-        -------
-            An Electricity object.
-
-        """
-        usage_prices: dict[datetime, float] = {}
-        return_prices: dict[datetime, float] = {}
-        for item in data:
-            usage_prices[
-                datetime.strptime(item["Timestamp"], "%Y-%m-%dT%H:%M:%S%z")
-            ] = item["TariffUsage"]
-            return_prices[
-                datetime.strptime(item["Timestamp"], "%Y-%m-%dT%H:%M:%S%z")
-            ] = item["TariffReturn"]
+    def from_dict(
+        cls,
+        data: list[dict[str, Any]],
+        *,
+        price_key: str,
+        return_price_key: str | None = None,
+    ) -> Self:
+        """Create an Electricity object from API data."""
+        intervals, prices, price_ends = _parse_price_data(data, price_key=price_key)
+        return_prices = prices
+        if return_price_key is not None:
+            return_prices = {
+                interval.starts_at: interval.value_for(return_price_key)
+                for interval in intervals
+            }
         return cls(
-            usage_prices=usage_prices,
-            return_prices=return_prices,
+            intervals=intervals,
+            prices=prices,
+            _return_prices=return_prices,
+            price_ends=price_ends,
         )
 
 
 @dataclass
-class Gas:
+class Gas(EnergyPrices):
     """Object representing gas data."""
 
-    prices: dict[datetime, float]
-
-    @property
-    def current_price(self) -> float | None:
-        """Return the current gas price.
-
-        Returns
-        -------
-            The current gas price.
-
-        """
-        return self.price_at_time(self.utcnow())
-
-    @property
-    def extreme_prices(self) -> tuple[float, float]:
-        """Return the minimum and maximum price for gas.
-
-        Returns
-        -------
-            The minimum and maximum price for gas.
-
-        """
-        return round(min(self.prices.values()), 5), round(max(self.prices.values()), 5)
-
-    @property
-    def timestamp_prices(self) -> list[dict[str, float | datetime]]:
-        """Return a dictionary with the prices for return.
-
-        Returns
-        -------
-            A dictionary with the prices for return.
-
-        """
-        return _generate_timestamp_list(self.prices)
-
-    @property
-    def average_price(self) -> float:
-        """Return the average price for gas.
-
-        Returns
-        -------
-            The average price for gas.
-
-        """
-        return round(sum(self.prices.values()) / len(self.prices), 5)
-
-    def utcnow(self) -> datetime:
-        """Return the current timestamp in the UTC timezone.
-
-        Returns
-        -------
-            The current timestamp in the UTC timezone.
-
-        """
-        return datetime.now(UTC)
-
-    def price_at_time(self, moment: datetime) -> float | None:
-        """Return the price at a specific time.
-
-        Args:
-        ----
-            moment: The time to get the price for.
-
-        Returns:
-        -------
-            The price at the specified time.
-
-        """
-        value = _timed_value(moment, self.prices)
-        if value is not None or value == 0:
-            return value
-        return None
-
     @classmethod
-    def from_dict(cls: type[Gas], data: list[dict[str, Any]]) -> Gas:
-        """Create a Gas object from a dictionary.
-
-        Args:
-        ----
-            data: A dictionary with the data from the API.
-
-        Returns:
-        -------
-            A Gas object.
-
-        """
-        prices: dict[datetime, float] = {}
-        for item in data:
-            prices[datetime.strptime(item["Timestamp"], "%Y-%m-%dT%H:%M:%S%z")] = item[
-                "TariffUsage"
-            ]
-
-        return cls(
-            prices=prices,
-        )
+    def from_dict(
+        cls,
+        data: list[dict[str, Any]],
+        *,
+        price_key: str,
+    ) -> Self:
+        """Create a Gas object from API data."""
+        intervals, prices, price_ends = _parse_price_data(data, price_key=price_key)
+        return cls(intervals=intervals, prices=prices, price_ends=price_ends)

@@ -17,13 +17,11 @@
 [![Typing Status][typing-shield]][typing-url]
 [![Code Coverage][codecov-shield]][codecov-url]
 
-Asynchronous Python client for the easyEnergy API.
+Asynchronous Python client for the easyEnergy price API.
 
 ## About
 
-A python package with which you can retrieve the dynamic energy/gas prices from [easyEnergy][easyenergy]. Third parties who purchase their energy via easyEnergy (as far as is known):
-
-- [NieuweStroom](https://nieuwestroom.nl)
+A Python package for retrieving dynamic electricity and gas prices from [easyEnergy][easyenergy]. The package uses the current price-graph API and supports both hourly and quarter-hour electricity prices.
 
 ## Installation
 
@@ -33,34 +31,72 @@ pip install easyenergy
 
 ## Data
 
-**note**: Currently only tested for day/tomorrow prices
+> [!NOTE]
+> The bundled example scripts are plain Python usage examples. They intentionally use fixed request dates so you can test a known day; adjust those dates when you want to inspect another period.
 
 You can read the following datasets with this package:
 
 ### Electricity prices
 
-**note**: easyEnergy has separate prices for usage and return to grid, which also differ per hour.
+> [!IMPORTANT]
+> The new easyEnergy price API exposes multiple electricity price components per interval. For electricity usage you can select either the market price (`price` / `priceIncVat`) or the billed invoice price (`invoicePrice`). Return to grid is mapped to the VAT-inclusive return price field (`priceIncVat`).
 
-The energy prices are different every hour, after 15:00 (more usually already at 14:00) the prices for the next day are published and it is therefore possible to retrieve these data.
+> [!TIP]
+> A single `energy_prices(...)` fetch exposes both `current_market_price` and `current_invoice_price`, plus `market_prices` and `invoice_prices`. That makes it straightforward to create separate Home Assistant price entities for the Energy dashboard without extra API calls.
 
+Electricity prices can be requested per hour or per quarter. This package defaults to hourly data for backwards compatibility, but quarter prices are also supported through `ElectricityGranularity.QUARTER`.
 
-- Current/Next[x] hour electricity market price (float)
-- Lowest energy price (float)
-- Highest energy price (float)
-- Average electricity price (float)
-- Time of highest price (datetime)
-- Time of lowest price (datetime)
-- Percentage of the current price compared to the maximum price
-- Number of hours with the current price or better (int)
+**Usage properties:**
+
+| Property | Type | Description |
+| :------- | :--- | :---------- |
+| `current_price` | float | Current usage price for the active interval |
+| `current_market_price` | float | Current market price (including VAT) |
+| `current_market_price_excluding_vat` | float | Current market price (excluding VAT) |
+| `current_invoice_price` | float | Current invoice/billed price |
+| `average_price` | float | Average price over all intervals |
+| `extreme_prices` | tuple | Minimum and maximum price (min, max) |
+| `highest_price_time` | datetime | Timestamp of the highest price |
+| `lowest_price_time` | datetime | Timestamp of the lowest price |
+| `pct_of_max` | float | Current price as percentage of maximum |
+| `periods_priced_equal_or_lower` | int | Number of intervals with current price or lower |
+| `periods_priced_equal_or_higher` | int | Number of intervals with current price or higher |
+| `prices` | dict | Usage price series (datetime → price) |
+| `market_prices` | dict | Market prices including VAT |
+| `market_prices_excluding_vat` | dict | Market prices excluding VAT |
+| `invoice_prices` | dict | Invoice/billed prices |
+
+**Return properties:**
+
+| Property | Type | Description |
+| :------- | :--- | :---------- |
+| `current_return_price` | float | Current return/feed-in price |
+| `average_return_price` | float | Average return price |
+| `extreme_return_prices` | tuple | Minimum and maximum return price |
+| `highest_return_price_time` | datetime | Timestamp of highest return price |
+| `lowest_return_price_time` | datetime | Timestamp of lowest return price |
+| `pct_of_max_return` | float | Current return as percentage of maximum |
+| `return_periods_priced_equal_or_higher` | int | Return intervals with current price or higher |
+| `return_prices` | dict | Return price series (datetime → price) |
+
+**Interval data:**
+
+Full interval rows via `energy.intervals`, each containing: `price`, `price_inc_vat`, `energy_tax`, `purchase_price`, `invoice_price`, `average`, `average_inc`, `unit`, and `granularity`.
 
 ### Gas prices
 
-The gas prices do not change per hour, but are fixed for 24 hours. Which means that from 06:00 in the morning the new rate for that day will be used.
+The gas prices are fixed per day in the new price API.
 
-- Current/Next[x] hour gas market price (float)
-- Lowest gas price (float)
-- Highest gas price (float)
-- Average gas price (float)
+| Property | Type | Description |
+| :------- | :--- | :---------- |
+| `current_price` | float | Current gas price |
+| `average_price` | float | Average gas price |
+| `extreme_prices` | tuple | Minimum and maximum price (min, max) |
+| `highest_price_time` | datetime | Timestamp of the highest price |
+| `lowest_price_time` | datetime | Timestamp of the lowest price |
+| `prices` | dict | Gas price series (datetime → price) |
+
+Full interval rows available via `gas.intervals`.
 
 ## Example
 
@@ -68,22 +104,51 @@ The gas prices do not change per hour, but are fixed for 24 hours. Which means t
 import asyncio
 
 from datetime import date
-from easyenergy import EasyEnergy, VatOption
+from easyenergy import (
+    EasyEnergy,
+    ElectricityGranularity,
+    VatOption,
+)
 
 
 async def main() -> None:
-    """Show example on fetching the energy prices from easyEnergy."""
+    """Fetch electricity and gas prices from easyEnergy."""
     async with EasyEnergy(vat=VatOption.INCLUDE) as client:
-        start_date = date(2022, 12, 7)
-        end_date = date(2022, 12, 7)
+        start_date = date(2026, 4, 19)
+        end_date = date(2026, 4, 19)
 
-        energy = await client.energy_prices(start_date, end_date)
+        energy = await client.energy_prices(
+            start_date,
+            end_date,
+            granularity=ElectricityGranularity.QUARTER,
+        )
         gas = await client.gas_prices(start_date, end_date)
+
+    print(f"Quarter intervals: {len(energy.intervals)}")
+    print(f"Current market price: {energy.current_market_price}")
+    print(f"Current invoice price: {energy.current_invoice_price}")
+    print(f"Average price: {energy.average_price}")
+    print(f"Average return price: {energy.average_return_price}")
+    print(f"First electricity interval: {energy.intervals[0]}")
+    print(f"Average gas price: {gas.average_price}")
+    print(f"First gas interval: {gas.intervals[0]}")
 
 
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+### Examples
+
+The repository ships plain usage examples under [`examples/`](examples):
+
+```bash
+poetry run python ./examples/energy.py
+poetry run python ./examples/gas.py
+poetry run python ./examples/prices_list.py
+```
+
+Those files are intentionally simple and meant as package-usage references, not as a full CLI. Update the fixed request date constants in the files when you want to inspect another day.
 
 ### Class Parameters
 
@@ -95,9 +160,10 @@ if __name__ == "__main__":
 
 | Parameter | value Type | Description |
 | :-------- | :--------- | :---------- |
-| `start_date` | datetime | The start date of the selected period |
-| `end_date` | datetime | The end date of the selected period |
+| `start_date` | date | The start date of the selected period |
+| `end_date` | date | The end date of the selected period |
 | `vat` | enum (default: class value) | Include or exclude VAT (**VatOption.INCLUDE** or **VatOption.EXCLUDE**) |
+| `granularity` | enum (electricity only) | Electricity granularity (**ElectricityGranularity.HOUR** or **ElectricityGranularity.QUARTER**) |
 
 ## Contributing
 

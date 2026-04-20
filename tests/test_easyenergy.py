@@ -2,6 +2,7 @@
 
 # pylint: disable=protected-access
 import asyncio
+from datetime import date
 from unittest.mock import patch
 
 import pytest
@@ -13,14 +14,16 @@ from easyenergy.exceptions import EasyEnergyConnectionError, EasyEnergyError
 
 from . import load_fixtures
 
+API_HOST = "price-graph.acc-mijn.easyenergy.com"
+
 
 async def test_json_request(
     aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
 ) -> None:
     """Test JSON response is handled correctly."""
     aresponses.add(
-        "mijn.easyenergy.com",
-        "/nl/api/tariff/test",
+        API_HOST,
+        "/api/test",
         "GET",
         aresponses.Response(
             status=200,
@@ -36,8 +39,8 @@ async def test_json_request(
 async def test_internal_session(aresponses: ResponsesMockServer) -> None:
     """Test internal session is handled correctly."""
     aresponses.add(
-        "mijn.easyenergy.com",
-        "/nl/api/tariff/test",
+        API_HOST,
+        "/api/test",
         "GET",
         aresponses.Response(
             status=200,
@@ -52,12 +55,11 @@ async def test_internal_session(aresponses: ResponsesMockServer) -> None:
 async def test_timeout(aresponses: ResponsesMockServer) -> None:
     """Test request timeout is handled correctly."""
 
-    # Faking a timeout by sleeping
     async def reponse_handler(_: ClientResponse) -> Response:
         await asyncio.sleep(0.2)
         return aresponses.Response(body="Goodmorning!")
 
-    aresponses.add("mijn.easyenergy.com", "/nl/api/tariff/test", "GET", reponse_handler)
+    aresponses.add(API_HOST, "/api/test", "GET", reponse_handler)
 
     async with ClientSession() as session:
         client = EasyEnergy(session=session, request_timeout=0.1)
@@ -70,8 +72,8 @@ async def test_content_type(
 ) -> None:
     """Test request content type error is handled correctly."""
     aresponses.add(
-        "mijn.easyenergy.com",
-        "/nl/api/tariff/test",
+        API_HOST,
+        "/api/test",
         "GET",
         aresponses.Response(
             status=200,
@@ -95,3 +97,22 @@ async def test_client_error() -> None:
             pytest.raises(EasyEnergyConnectionError),
         ):
             assert await client._request("test")
+
+
+async def test_unexpected_response_shape(
+    aresponses: ResponsesMockServer, easyenergy_client: EasyEnergy
+) -> None:
+    """Test an invalid price response shape."""
+    aresponses.add(
+        API_HOST,
+        "/api/prices",
+        "GET",
+        aresponses.Response(
+            status=200,
+            headers={"Content-Type": "application/json"},
+            text="[]",
+        ),
+    )
+    today = date(2026, 4, 19)
+    with pytest.raises(EasyEnergyError):
+        await easyenergy_client.energy_prices(start_date=today, end_date=today)
