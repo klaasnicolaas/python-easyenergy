@@ -5,7 +5,7 @@ description = "Asynchronous Python client providing energy/gas prices from easyE
 authors = [{ name="Klaas Schoute", email="<hello@student-techlife.com>"}]
 maintainers = [{name="Klaas Schoute", email="<hello@student-techlife.com>"}]
 license = "MIT"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<4.0"
 readme = "README.md"
 keywords = ["energy", "easyenergy", "gas", "prices", "api", "async", "client"]
 classifiers = [
@@ -24,11 +24,20 @@ dynamic = ["dependencies"]
 packages = [
   { include = "easyenergy", from = "src"},
 ]
+dependencies = [
+  "aiohttp (>=3.13.5,<4.0.0)",
+  "yarl (>=1.23.0,<2.0.0)",
+  "mashumaro (>=3.20,<4.0)"
+]
 
-[tool.poetry.dependencies]
-aiohttp = ">=3.0.0"
-python = "^3.12"
-yarl = ">=1.6.0"
+[project.optional-dependencies]
+cli = ["typer>=0.24.0,<1.0.0"]
+
+[project.scripts]
+easyenergy = "easyenergy.cli:cli"
+
+[tool.poetry]
+requires-poetry = '>=2.0'
 
 [project.urls]
 homepage = "https://github.com/klaasnicolaas/python-easyenergy"
@@ -49,11 +58,10 @@ pytest = "9.0.3"
 pytest-asyncio = "1.3.0"
 pytest-cov = "7.1.0"
 pytest-freezer = "0.4.9"
-pytz = "2026.1.post1"
 ruff = "0.15.11"
 syrupy = "5.1.0"
 ty = "0.0.32"
-types-pytz = "2026.1.1.20260408"
+typer = "0.24.1"
 yamllint = "1.38.0"
 
 [tool.coverage.run]
@@ -61,18 +69,20 @@ plugins = ["covdefaults"]
 source = ["easyenergy"]
 
 [tool.coverage.report]
-fail_under = 90
 show_missing = true
+fail_under = 95
+
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.pylint.MASTER]
+ignore = ["tests"]
 
 [tool.pylint.BASIC]
-good-names = ["_", "ex", "fp", "i", "id", "j", "k", "on", "Run", "T"]
+good-names = ["_", "ex", "fp", "i", "id", "j", "k", "on", "Run", "T", "wv"]
 
 [tool.pylint."MESSAGES CONTROL"]
-disable= [
-  "duplicate-code",
-  "format",
-  "unsubscriptable-object",
-]
+disable = ["too-few-public-methods", "duplicate-code", "format", "unsubscriptable-object"]
 
 [tool.pylint.SIMILARITIES]
 ignore-imports = true
@@ -96,10 +106,10 @@ lint.ignore = [
   "D213",    # Conflicts with other rules
   "D417",    # False positives in some occasions
   "PLR2004", # Just annoying, not really useful
-  "SLOT000", # Has a bug with enums: https://github.com/astral-sh/ruff/issues/5748
 
   # Conflicts with the Ruff formatter
   "COM812",
+  "ISC001",
 ]
 
 [tool.ruff.lint.flake8-pytest-style]
@@ -109,9 +119,12 @@ fixture-parentheses = false
 [tool.ruff.lint.isort]
 known-first-party = ["easyenergy"]
 
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = ["mashumaro.mixins.orjson.DataClassORJSONMixin"]
+
 [tool.ruff.lint.mccabe]
 max-complexity = 25
 
 [build-system]
+requires = ["poetry-core>=2.0"]
 build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core>=1.0.0"]

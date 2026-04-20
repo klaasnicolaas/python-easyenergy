@@ -1,0 +1,70 @@
+{
+  "providedAt": "2026-04-19T22:16:43.9481189Z",
+  "prices": [
+    {
+      "from": "2026-04-19T14:00:00.0000000",
+      "until": "2026-04-19T14:15:00.0000000",
+      "price": -0.0021,
+      "unit": "kWh",
+      "priceIncVat": -0.0021,
+      "energyTax": 0.11085,
+      "purchasePrice": 0.02178,
+      "invoicePrice": 0.13053,
+      "average": 0.0786,
+      "averageInc": 0.09516,
+      "granularity": "quarter"
+    },
+    {
+      "from": "2026-04-19T14:15:00.0000000",
+      "until": "2026-04-19T14:30:00.0000000",
+      "price": -0.00249,
+      "unit": "kWh",
+      "priceIncVat": -0.00249,
+      "energyTax": 0.11085,
+      "purchasePrice": 0.02178,
+      "invoicePrice": 0.13014,
+      "average": 0.0786,
+      "averageInc": 0.09516,
+      "granularity": "quarter"
+    },
+    {
+      "from": "2026-04-19T14:30:00.0000000",
+      "until": "2026-04-19T14:45:00.0000000",
+      "price": -0.00304,
+      "unit": "kWh",
+      "priceIncVat": -0.00304,
+      "energyTax": 0.11085,
+      "purchasePrice": 0.02178,
+      "invoicePrice": 0.12959,
+      "average": 0.0786,
+      "averageInc": 0.09516,
+      "granularity": "quarter"
+    },
+    {
+      "from": "2026-04-19T14:45:00.0000000",
+      "until": "2026-04-19T15:00:00.0000000",
+      "price": -0.00439,
+      "unit": "kWh",
+      "priceIncVat": -0.00439,
+      "energyTax": 0.11085,
+      "purchasePrice": 0.02178,
+      "invoicePrice": 0.12824,
+      "average": 0.0786,
+      "averageInc": 0.09516,
+      "granularity": "quarter"
+    },
+    {
+      "from": "2026-04-19T15:00:00.0000000",
+      "until": "2026-04-19T15:15:00.0000000",
+      "price": -0.00321,
+      "unit": "kWh",
+      "priceIncVat": -0.00321,
+      "energyTax": 0.11085,
+      "purchasePrice": 0.02178,
+      "invoicePrice": 0.12942,
+      "average": 0.0786,
+      "averageInc": 0.09516,
+      "granularity": "quarter"
+    }
+  ]
+}
