@@ -22,18 +22,17 @@
   │ Lowest return at       │ 2026-04-19 14:45:00 CEST │
   │ Highest return at      │ 2026-04-19 14:00:00 CEST │
   └────────────────────────┴──────────────────────────┘
-                                 Returned intervals
-  ┏━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┓
-  ┃        ┃        ┃        ┃        ┃    Inc ┃       ┃        ┃       ┃        ┃
-  ┃ Start  ┃ End    ┃  Usage ┃ Market ┃    VAT ┃   Tax ┃ Purch… ┃ Invo… ┃ Unit   ┃
-  ┡━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━┩
-  │ 2026-… │ 2026-… │ 0.130… │ -0.00… │ -0.00… │ 0.11… │ 0.021… │ 0.13… │ quart… │
-  │ 14:00… │ 14:15… │        │        │        │       │        │       │        │
-  │ CEST   │ CEST   │        │        │        │       │        │       │        │
-  │ 2026-… │ 2026-… │ 0.130… │ -0.00… │ -0.00… │ 0.11… │ 0.021… │ 0.13… │ quart… │
-  │ 14:15… │ 14:30… │        │        │        │       │        │       │        │
-  │ CEST   │ CEST   │        │        │        │       │        │       │        │
-  └────────┴────────┴────────┴────────┴────────┴───────┴────────┴───────┴────────┘
+                                           Returned intervals
+  ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
+  ┃ Start     ┃ End       ┃   Usage ┃   Market ┃  Inc VAT ┃     Tax ┃ Purchase ┃ Invoice ┃ Unit      ┃
+  ┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━┩
+  │ 2026-04-… │ 2026-04-… │ 0.13053 │ -0.00210 │ -0.00210 │ 0.11085 │  0.02178 │ 0.13053 │ quarter/… │
+  │ 14:00:00  │ 14:15:00  │         │          │          │         │          │         │           │
+  │ CEST      │ CEST      │         │          │          │         │          │         │           │
+  │ 2026-04-… │ 2026-04-… │ 0.13014 │ -0.00249 │ -0.00249 │ 0.11085 │  0.02178 │ 0.13014 │ quarter/… │
+  │ 14:15:00  │ 14:30:00  │         │          │          │         │          │         │           │
+  │ CEST      │ CEST      │         │          │          │         │          │         │           │
+  └───────────┴───────────┴─────────┴──────────┴──────────┴─────────┴──────────┴─────────┴───────────┘
   
   '''
 # ---
@@ -41,45 +40,44 @@
   '''
   Entity overview for 2026-04-19
   
-                                Electricity - Usage
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃ Entity                  ┃                    Value ┃ Description             ┃
-  ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
-  │ current_price           │                        - │ Current usage price     │
-  │ current_market_price    │                        - │ Market price (inc VAT)  │
-  │ current_market_price_e… │                        - │ Market price (exc VAT)  │
-  │ current_invoice_price   │                        - │ Invoice price           │
-  │ average_price           │                  0.09516 │ Average price           │
-  │ extreme_prices          │      (-0.00300, 0.15082) │ Min/max price (tuple)   │
-  │ highest_price_time      │ 2026-04-19 20:00:00 CEST │ Time of highest price   │
-  │ lowest_price_time       │ 2026-04-19 14:00:00 CEST │ Time of lowest price    │
-  │ pct_of_max              │                  0.00000 │ Current as % of max     │
-  │ periods_priced_equal_o… │                        3 │ Intervals <= current    │
-  │ periods_priced_equal_o… │                       21 │ Intervals >= current    │
-  │ prices                  │           <24 intervals> │ Price series            │
-  │ market_prices           │           <24 intervals> │ Market prices (inc VAT) │
-  │ market_prices_excludin… │           <24 intervals> │ Market prices (exc VAT) │
-  │ invoice_prices          │           <24 intervals> │ Invoice prices          │
-  │ timestamp_prices        │               <24 items> │ Timestamps + prices     │
-  │ timestamp_market_prices │               <24 items> │ Timestamps + market     │
-  │ timestamp_market_price… │               <24 items> │ Timestamps + market     │
-  │                         │                          │ (exc VAT)               │
-  │ timestamp_invoice_pric… │               <24 items> │ Timestamps + invoice    │
-  └─────────────────────────┴──────────────────────────┴─────────────────────────┘
-                                Electricity - Return
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃ Entity                   ┃                    Value ┃ Description            ┃
-  ┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
-  │ current_return_price     │                        - │ Current return price   │
-  │ average_return_price     │                  0.09516 │ Average return price   │
-  │ extreme_return_prices    │      (-0.00300, 0.15082) │ Min/max return (tuple) │
-  │ highest_return_price_ti… │ 2026-04-19 20:00:00 CEST │ Time of highest        │
-  │ lowest_return_price_time │ 2026-04-19 14:00:00 CEST │ Time of lowest         │
-  │ pct_of_max_return        │                  0.00000 │ Current as % of max    │
-  │ return_periods_priced_e… │                       21 │ Intervals >= current   │
-  │ return_prices            │           <24 intervals> │ Return price series    │
-  │ timestamp_return_prices  │               <24 items> │ Timestamps + return    │
-  └──────────────────────────┴──────────────────────────┴────────────────────────┘
+                                          Electricity - Usage
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃ Entity                                ┃                    Value ┃ Description                   ┃
+  ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+  │ current_price                         │                        - │ Current usage price           │
+  │ current_market_price                  │                        - │ Market price (inc VAT)        │
+  │ current_market_price_excluding_vat    │                        - │ Market price (exc VAT)        │
+  │ current_invoice_price                 │                        - │ Invoice price                 │
+  │ average_price                         │                  0.09516 │ Average price                 │
+  │ extreme_prices                        │      (-0.00300, 0.15082) │ Min/max price (tuple)         │
+  │ highest_price_time                    │ 2026-04-19 20:00:00 CEST │ Time of highest price         │
+  │ lowest_price_time                     │ 2026-04-19 14:00:00 CEST │ Time of lowest price          │
+  │ pct_of_max                            │                  0.00000 │ Current as % of max           │
+  │ periods_priced_equal_or_lower         │                        3 │ Intervals <= current          │
+  │ periods_priced_equal_or_higher        │                       21 │ Intervals >= current          │
+  │ prices                                │           <24 intervals> │ Price series                  │
+  │ market_prices                         │           <24 intervals> │ Market prices (inc VAT)       │
+  │ market_prices_excluding_vat           │           <24 intervals> │ Market prices (exc VAT)       │
+  │ invoice_prices                        │           <24 intervals> │ Invoice prices                │
+  │ timestamp_prices                      │               <24 items> │ Timestamps + prices           │
+  │ timestamp_market_prices               │               <24 items> │ Timestamps + market           │
+  │ timestamp_market_prices_excluding_vat │               <24 items> │ Timestamps + market (exc VAT) │
+  │ timestamp_invoice_prices              │               <24 items> │ Timestamps + invoice          │
+  └───────────────────────────────────────┴──────────────────────────┴───────────────────────────────┘
+                                      Electricity - Return
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃ Entity                                ┃                    Value ┃ Description            ┃
+  ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+  │ current_return_price                  │                        - │ Current return price   │
+  │ average_return_price                  │                  0.09516 │ Average return price   │
+  │ extreme_return_prices                 │      (-0.00300, 0.15082) │ Min/max return (tuple) │
+  │ highest_return_price_time             │ 2026-04-19 20:00:00 CEST │ Time of highest        │
+  │ lowest_return_price_time              │ 2026-04-19 14:00:00 CEST │ Time of lowest         │
+  │ pct_of_max_return                     │                  0.00000 │ Current as % of max    │
+  │ return_periods_priced_equal_or_higher │                       21 │ Intervals >= current   │
+  │ return_prices                         │           <24 intervals> │ Return price series    │
+  │ timestamp_return_prices               │               <24 items> │ Timestamps + return    │
+  └───────────────────────────────────────┴──────────────────────────┴────────────────────────┘
                                      Gas
   ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
   ┃ Entity             ┃                    Value ┃ Description           ┃
@@ -97,28 +95,26 @@
 # ---
 # name: test_cli_gas_command
   '''
-                                        Gas
-  ┌────────────────────┬─────────────────────────────────────────────────────────┐
-  │ Requested period   │ 2026-04-01 -> 2026-04-02                                │
-  │ Returned intervals │ 2                                                       │
-  │ Unit               │ m3                                                      │
-  │ Selected price     │ 0.61690                                                 │
-  │ Average price      │ 0.59776                                                 │
-  │ Lowest price       │ 0.57862                                                 │
-  │ Highest price      │ 0.61690                                                 │
-  │ First interval     │ 2026-04-01 00:00:00 CEST -> 2026-04-02 00:00:00 CEST |  │
-  │                    │ market=0.50983 | inc_vat=0.61690 | tax=0.72680 |        │
-  │                    │ purchase=0.07900 | invoice=1.42270 | day/m3             │
-  └────────────────────┴─────────────────────────────────────────────────────────┘
-                                 Returned intervals
-  ┏━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┓
-  ┃        ┃        ┃        ┃        ┃    Inc ┃        ┃       ┃        ┃       ┃
-  ┃ Start  ┃ End    ┃  Price ┃ Market ┃    VAT ┃    Tax ┃ Purc… ┃ Invoi… ┃ Unit  ┃
-  ┡━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━┩
-  │ 2026-… │ 2026-… │ 0.616… │ 0.509… │ 0.616… │ 0.726… │ 0.07… │ 1.422… │ day/… │
-  │ 00:00… │ 00:00… │        │        │        │        │       │        │       │
-  │ CEST   │ CEST   │        │        │        │        │       │        │       │
-  └────────┴────────┴────────┴────────┴────────┴────────┴───────┴────────┴───────┘
+                                                  Gas
+  ┌────────────────────┬─────────────────────────────────────────────────────────────────────────────┐
+  │ Requested period   │ 2026-04-01 -> 2026-04-02                                                    │
+  │ Returned intervals │ 2                                                                           │
+  │ Unit               │ m3                                                                          │
+  │ Selected price     │ 0.61690                                                                     │
+  │ Average price      │ 0.59776                                                                     │
+  │ Lowest price       │ 0.57862                                                                     │
+  │ Highest price      │ 0.61690                                                                     │
+  │ First interval     │ 2026-04-01 00:00:00 CEST -> 2026-04-02 00:00:00 CEST | market=0.50983 |     │
+  │                    │ inc_vat=0.61690 | tax=0.72680 | purchase=0.07900 | invoice=1.42270 | day/m3 │
+  └────────────────────┴─────────────────────────────────────────────────────────────────────────────┘
+                                           Returned intervals
+  ┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┓
+  ┃ Start        ┃ End         ┃   Price ┃  Market ┃ Inc VAT ┃     Tax ┃ Purchase ┃ Invoice ┃ Unit   ┃
+  ┡━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━┩
+  │ 2026-04-01   │ 2026-04-02  │ 0.61690 │ 0.50983 │ 0.61690 │ 0.72680 │  0.07900 │ 1.42270 │ day/m3 │
+  │ 00:00:00     │ 00:00:00    │         │         │         │         │          │         │        │
+  │ CEST         │ CEST        │         │         │         │         │          │         │        │
+  └──────────────┴─────────────┴─────────┴─────────┴─────────┴─────────┴──────────┴─────────┴────────┘
   
   '''
 # ---
@@ -132,30 +128,28 @@
 # ---
 # name: test_cli_prices_list_command
   '''
-                         Electricity intervals (2026-04-19)
-  ┏━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┓
-  ┃        ┃        ┃        ┃        ┃    Inc ┃       ┃        ┃       ┃        ┃
-  ┃ Start  ┃ End    ┃  Usage ┃ Market ┃    VAT ┃   Tax ┃ Purch… ┃ Invo… ┃ Unit   ┃
-  ┡━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━┩
-  │ 2026-… │ 2026-… │ 0.130… │ -0.00… │ -0.00… │ 0.11… │ 0.021… │ 0.13… │ quart… │
-  │ 14:00… │ 14:15… │        │        │        │       │        │       │        │
-  │ CEST   │ CEST   │        │        │        │       │        │       │        │
-  │ 2026-… │ 2026-… │ 0.130… │ -0.00… │ -0.00… │ 0.11… │ 0.021… │ 0.13… │ quart… │
-  │ 14:15… │ 14:30… │        │        │        │       │        │       │        │
-  │ CEST   │ CEST   │        │        │        │       │        │       │        │
-  └────────┴────────┴────────┴────────┴────────┴───────┴────────┴───────┴────────┘
-                             Gas intervals (2026-04-19)
-  ┏━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┓
-  ┃        ┃        ┃        ┃        ┃    Inc ┃        ┃       ┃        ┃       ┃
-  ┃ Start  ┃ End    ┃  Price ┃ Market ┃    VAT ┃    Tax ┃ Purc… ┃ Invoi… ┃ Unit  ┃
-  ┡━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━┩
-  │ 2026-… │ 2026-… │ 0.616… │ 0.509… │ 0.616… │ 0.726… │ 0.07… │ 1.422… │ day/… │
-  │ 00:00… │ 00:00… │        │        │        │        │       │        │       │
-  │ CEST   │ CEST   │        │        │        │        │       │        │       │
-  │ 2026-… │ 2026-… │ 0.578… │ 0.478… │ 0.578… │ 0.726… │ 0.07… │ 1.384… │ day/… │
-  │ 00:00… │ 00:00… │        │        │        │        │       │        │       │
-  │ CEST   │ CEST   │        │        │        │        │       │        │       │
-  └────────┴────────┴────────┴────────┴────────┴────────┴───────┴────────┴───────┘
+                                   Electricity intervals (2026-04-19)
+  ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
+  ┃ Start     ┃ End       ┃   Usage ┃   Market ┃  Inc VAT ┃     Tax ┃ Purchase ┃ Invoice ┃ Unit      ┃
+  ┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━┩
+  │ 2026-04-… │ 2026-04-… │ 0.13053 │ -0.00210 │ -0.00210 │ 0.11085 │  0.02178 │ 0.13053 │ quarter/… │
+  │ 14:00:00  │ 14:15:00  │         │          │          │         │          │         │           │
+  │ CEST      │ CEST      │         │          │          │         │          │         │           │
+  │ 2026-04-… │ 2026-04-… │ 0.13014 │ -0.00249 │ -0.00249 │ 0.11085 │  0.02178 │ 0.13014 │ quarter/… │
+  │ 14:15:00  │ 14:30:00  │         │          │          │         │          │         │           │
+  │ CEST      │ CEST      │         │          │          │         │          │         │           │
+  └───────────┴───────────┴─────────┴──────────┴──────────┴─────────┴──────────┴─────────┴───────────┘
+                                       Gas intervals (2026-04-19)
+  ┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┓
+  ┃ Start        ┃ End         ┃   Price ┃  Market ┃ Inc VAT ┃     Tax ┃ Purchase ┃ Invoice ┃ Unit   ┃
+  ┡━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━┩
+  │ 2026-04-01   │ 2026-04-02  │ 0.61690 │ 0.50983 │ 0.61690 │ 0.72680 │  0.07900 │ 1.42270 │ day/m3 │
+  │ 00:00:00     │ 00:00:00    │         │         │         │         │          │         │        │
+  │ CEST         │ CEST        │         │         │         │         │          │         │        │
+  │ 2026-04-02   │ 2026-04-03  │ 0.57862 │ 0.47820 │ 0.57862 │ 0.72680 │  0.07900 │ 1.38442 │ day/m3 │
+  │ 00:00:00     │ 00:00:00    │         │         │         │         │          │         │        │
+  │ CEST         │ CEST        │         │         │         │         │          │         │        │
+  └──────────────┴─────────────┴─────────┴─────────┴─────────┴─────────┴──────────┴─────────┴────────┘
   
   '''
 # ---

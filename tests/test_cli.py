@@ -46,10 +46,18 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 
+pytestmark = pytest.mark.usefixtures("stable_terminal")
+
+
 def _normalize_cli_output(output: str) -> str:
     """Normalize Rich CLI output for stable snapshots."""
     lines = [line.rstrip() for line in output.splitlines()]
     return "\n".join(lines).strip("\n") + "\n"
+
+
+def _plain_cli_output(output: str) -> str:
+    """Return CLI output without ANSI styling."""
+    return click.unstyle(output)
 
 
 def _load_energy(
@@ -321,7 +329,7 @@ def test_cli_invalid_period_command() -> None:
     )
 
     assert result.exit_code == 2
-    assert "--date cannot be combined" in result.output
+    assert "--date cannot be combined" in _plain_cli_output(result.output)
 
 
 def test_cli_no_data_handler(
