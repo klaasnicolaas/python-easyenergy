@@ -6,7 +6,7 @@ from enum import StrEnum
 from typing import Final
 from zoneinfo import ZoneInfo
 
-API_HOST: Final = "price-graph.acc-mijn.easyenergy.com"
+API_HOST: Final = "price-graph.mijn.easyenergy.com"
 API_PATH: Final = "/api/"
 MARKET_TIMEZONE: Final = ZoneInfo("Europe/Amsterdam")
 

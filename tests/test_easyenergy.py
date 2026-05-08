@@ -14,7 +14,7 @@ from easyenergy.exceptions import EasyEnergyConnectionError, EasyEnergyError
 
 from . import load_fixtures
 
-API_HOST = "price-graph.acc-mijn.easyenergy.com"
+API_HOST = "price-graph.mijn.easyenergy.com"
 
 
 async def test_json_request(
