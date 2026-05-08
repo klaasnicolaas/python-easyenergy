@@ -19,7 +19,7 @@ from easyenergy.models import _normalize_moment, _normalize_timestamp, _parse_ti
 
 from . import load_fixtures
 
-API_HOST = "price-graph.acc-mijn.easyenergy.com"
+API_HOST = "price-graph.mijn.easyenergy.com"
 
 
 def _electricity_snapshot(energy: Electricity) -> dict[str, object]:
