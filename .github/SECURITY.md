@@ -12,7 +12,12 @@ If you believe you have discovered a security vulnerability, please submit it th
 2. Click **“Report a vulnerability”**
 3. Include a clear description, impact assessment (if known), and steps to reproduce
 
+You can also open a private vulnerability report directly:
+https://github.com/klaasnicolaas/python-easyenergy/security/advisories/new
+
 This mechanism is the preferred and most secure way to report vulnerabilities, consistent with best practices across open-source projects.
+
+Security vulnerabilities include issues that could affect users of this Python package, such as unsafe handling of remote API data, credential exposure, dependency-related vulnerabilities, or behavior that could allow unintended access to local or remote resources.
 
 ## What Happens Next
 
@@ -23,7 +28,9 @@ After receiving your report, maintainers will:
 - Investigate and work toward a fix or mitigation
 - Communicate with you throughout the process
 
-Due to the varying nature and complexity of security issues, we do not commit to strict response or resolution deadlines. Nonetheless, we aim to handle all reports in a timely and responsible manner.
+Maintainers aim to acknowledge vulnerability reports within 7 days when possible. After confirmation, we will work on a fix or mitigation and coordinate disclosure with the reporter.
+
+For confirmed vulnerabilities, we generally aim to coordinate disclosure within 90 days. This is not a guaranteed deadline; the timeline may be shorter or longer depending on severity, exploitability, maintainer availability, and release coordination needs.
 
 ## Coordinated Disclosure
 
