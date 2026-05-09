@@ -8,15 +8,18 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   update_release_draft:
     name: ✏️ Draft release
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: read
+      contents: write  # To update the release draft
+      pull-requests: read  # To read pull request data for release notes
     steps:
       - name: 🚀 Run Release Drafter
-        uses: release-drafter/release-drafter@v7.3.0
+        uses: release-drafter/release-drafter@da8b9b696abad2ad997580e49f4c1c2e03cc2bd2 # v7.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
