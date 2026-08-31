@@ -350,7 +350,7 @@ def no_data_error_handler(exception: EasyEnergyNoDataError) -> None:
 
 
 @cli.command("energy")
-async def command_energy(  # noqa: PLR0913  # pylint: disable=too-many-arguments,too-many-positional-arguments
+async def command_energy(  # noqa: PLR0913, PLR0917
     date_value: DateOption = None,
     start_date: StartDateOption = None,
     end_date: EndDateOption = None,
@@ -397,7 +397,7 @@ async def command_gas(
 
 
 @cli.command("prices-list")
-async def command_prices_list(  # noqa: PLR0913  # pylint: disable=too-many-arguments,too-many-positional-arguments
+async def command_prices_list(  # noqa: PLR0913, PLR0917
     date_value: DateOption = None,
     start_date: StartDateOption = None,
     end_date: EndDateOption = None,
