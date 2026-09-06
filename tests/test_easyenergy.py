@@ -1,6 +1,5 @@
 """Basic tests for the easyEnergy API."""
 
-# pylint: disable=protected-access
 import asyncio
 from datetime import date
 from unittest.mock import patch

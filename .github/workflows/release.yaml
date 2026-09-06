@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
     permissions:
-      contents: write
+      contents: read
       id-token: write
     steps:
       - name: ⤵️ Check out code from GitHub
@@ -34,7 +34,6 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ env.DEFAULT_PYTHON }}
-          cache: "poetry" # zizmor: ignore[cache-poisoning] - Low risk: release-only trigger, pinned actions, PyPI verification
       - name: 🏗 Install workflow dependencies
         run: |
           poetry config virtualenvs.create true
@@ -63,8 +62,12 @@ jobs:
     environment: release
     needs: release
     permissions: {}
+    env:
+      BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
+      BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
     steps:
-      - uses: myConsciousness/bluesky-post@96827d0a9604cb228b11b3095f6961196efba4a0 # v5.0.0
+      - name: 🦋 Post to Bluesky
+        uses: myConsciousness/bluesky-post@96827d0a9604cb228b11b3095f6961196efba4a0 # v5.0.0
         with:
           text: |
             ⬆️ ${{ github.event.release.tag_name }} of ${{ github.event.repository.name }} is out 🎉 #update @klaasnicolaas.nl #python #package #easyenergy #prices #release
