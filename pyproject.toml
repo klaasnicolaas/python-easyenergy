@@ -2,9 +2,10 @@
 name = "easyenergy"
 version = "0.0.0"
 description = "Asynchronous Python client providing energy/gas prices from easyEnergy"
-authors = [{ name="Klaas Schoute", email="<hello@student-techlife.com>"}]
-maintainers = [{name="Klaas Schoute", email="<hello@student-techlife.com>"}]
+authors = [{ name="Klaas Schoute", email="hello@student-techlife.com"}]
+maintainers = [{name="Klaas Schoute", email="hello@student-techlife.com"}]
 license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12,<4.0"
 readme = "README.md"
 keywords = ["energy", "easyenergy", "gas", "prices", "api", "async", "client"]
@@ -12,17 +13,12 @@ classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Framework :: AsyncIO",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Natural Language :: English",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: 3",
   "Topic :: Software Development :: Libraries :: Python Modules",
-]
-dynamic = ["dependencies"]
-packages = [
-  { include = "easyenergy", from = "src"},
 ]
 dependencies = [
   "aiohttp (>=3.13.5,<4.0.0)",
@@ -37,6 +33,9 @@ cli = ["typer>=0.24.0,<1.0.0"]
 easyenergy = "easyenergy.cli:cli"
 
 [tool.poetry]
+packages = [
+  { include = "easyenergy", from = "src"},
+]
 requires-poetry = '>=2.0'
 
 [project.urls]
@@ -53,7 +52,6 @@ covdefaults = "2.3.0"
 coverage = {version = "7.16.0", extras = ["toml"]}
 pre-commit-hooks = "6.0.0"
 prek = "0.5.2"
-pylint = "4.0.8"
 pytest = "9.1.1"
 pytest-asyncio = "1.4.0"
 pytest-cov = "7.1.0"
@@ -75,24 +73,6 @@ fail_under = 95
 
 [tool.ty.environment]
 python-version = "3.12"
-
-[tool.pylint.MASTER]
-ignore = ["tests"]
-
-[tool.pylint.BASIC]
-good-names = ["_", "ex", "fp", "i", "id", "j", "k", "on", "Run", "T", "wv"]
-
-[tool.pylint."MESSAGES CONTROL"]
-disable = ["too-few-public-methods", "duplicate-code", "format", "unsubscriptable-object"]
-
-[tool.pylint.SIMILARITIES]
-ignore-imports = true
-
-[tool.pylint.FORMAT]
-max-line-length = 88
-
-[tool.pylint.DESIGN]
-max-attributes = 8
 
 [tool.pytest.ini_options]
 addopts = "--cov"
@@ -128,5 +108,5 @@ runtime-evaluated-base-classes = ["mashumaro.mixins.orjson.DataClassORJSONMixin"
 max-complexity = 25
 
 [build-system]
-requires = ["poetry-core>=2.0"]
+requires = ["poetry-core>=2.2.0"]
 build-backend = "poetry.core.masonry.api"

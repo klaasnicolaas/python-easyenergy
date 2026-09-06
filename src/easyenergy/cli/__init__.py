@@ -449,7 +449,6 @@ async def command_prices_list(  # noqa: PLR0913, PLR0917  # pylint: disable=too-
     console.print(gas_table)
 
 
-# pylint: disable-next=too-many-return-statements
 def _format_entity_value(value: object) -> str:  # noqa: PLR0911
     """Format an entity value for display."""
     if value is None:
