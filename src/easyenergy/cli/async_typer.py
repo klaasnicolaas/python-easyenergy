@@ -22,6 +22,7 @@ Adaptation of the snippet/code from:
 from __future__ import annotations
 
 import asyncio
+import inspect
 from collections.abc import Callable
 from functools import wraps
 from typing import TYPE_CHECKING, Any, TypeVar, cast
@@ -83,7 +84,7 @@ class AsyncTyper(SyncTyper):
         )
 
         def decorator(func: _CommandFunc) -> _CommandFunc:
-            if asyncio.iscoroutinefunction(func):
+            if inspect.iscoroutinefunction(func):
 
                 @wraps(func)
                 def sync_func(*_args: Any, **_kwargs: Any) -> Any:
@@ -132,7 +133,7 @@ class AsyncTyper(SyncTyper):
         )
 
         def decorator(func: _CommandFunc) -> _CommandFunc:
-            if asyncio.iscoroutinefunction(func):
+            if inspect.iscoroutinefunction(func):
 
                 @wraps(func)
                 def sync_func(*_args: Any, **_kwargs: Any) -> Any:
