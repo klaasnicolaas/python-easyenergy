@@ -150,9 +150,9 @@ if __name__ == "__main__":
 The repository ships plain usage examples under [`examples/`](examples):
 
 ```bash
-poetry run python ./examples/energy.py
-poetry run python ./examples/gas.py
-poetry run python ./examples/prices_list.py
+uv run python ./examples/energy.py
+uv run python ./examples/gas.py
+uv run python ./examples/prices_list.py
 ```
 
 Those files are intentionally simple and meant as package-usage references, not as a full CLI. Update the fixed request date constants in the files when you want to inspect another day.
@@ -162,11 +162,11 @@ Those files are intentionally simple and meant as package-usage references, not 
 The package also ships a Rich/Typer-based CLI under [`src/easyenergy/cli`](src/easyenergy/cli):
 
 ```bash
-poetry run easyenergy energy --date 2026-04-19
-poetry run easyenergy energy --date 2026-04-19 --price-type invoice
-poetry run easyenergy gas --start-date 2026-04-01 --end-date 2026-04-02
-poetry run easyenergy prices-list --date 2026-04-19 --granularity quarter
-poetry run easyenergy entities --date 2026-04-19
+uv run easyenergy energy --date 2026-04-19
+uv run easyenergy energy --date 2026-04-19 --price-type invoice
+uv run easyenergy gas --start-date 2026-04-01 --end-date 2026-04-02
+uv run easyenergy prices-list --date 2026-04-19 --granularity quarter
+uv run easyenergy entities --date 2026-04-19
 ```
 
 The `entities` command shows all available properties for Home Assistant integration, grouped by usage, return, and gas.
@@ -213,24 +213,23 @@ By clicking the button below you immediately start a Dev Container in Visual Stu
 
 [![Open in Dev Containers][devcontainer-shield]][devcontainer]
 
-This Python project relies on [Poetry][poetry] as its dependency manager,
+This Python project relies on [uv][uv] as its dependency manager,
 providing comprehensive management and control over project dependencies.
 
 You need at least:
 
 - Python 3.12+
-- [Poetry][poetry-install]
+- [uv][uv-install]
 
 ### Installation
 
 Install all packages, including all development requirements:
 
 ```bash
-poetry install
+uv sync --locked
 ```
 
-_Poetry creates by default an virtual environment where it installs all
-necessary pip packages_.
+_uv creates a project virtual environment in `.venv` and installs the locked dependencies._
 
 ### Prek
 
@@ -238,13 +237,13 @@ This repository uses the [prek][prek] framework, all changes
 are linted and tested with each commit. To setup the prek check, run:
 
 ```bash
-poetry run prek install
+uv run prek install
 ```
 
 And to run all checks and tests manually, use the following command:
 
 ```bash
-poetry run prek run --all-files
+uv run prek run --all-files
 ```
 
 ### Testing
@@ -252,13 +251,13 @@ poetry run prek run --all-files
 It uses [pytest](https://docs.pytest.org/en/stable/) as the test framework. To run the tests:
 
 ```bash
-poetry run pytest
+uv run pytest
 ```
 
 To update the [syrupy](https://github.com/tophat/syrupy) snapshot tests:
 
 ```bash
-poetry run pytest --snapshot-update
+uv run pytest --snapshot-update
 ```
 
 ## License
@@ -311,6 +310,6 @@ SOFTWARE.
 [scorecard-shield]: https://api.scorecard.dev/projects/github.com/klaasnicolaas/python-easyenergy/badge
 [scorecard-url]: https://scorecard.dev/viewer/?uri=github.com/klaasnicolaas/python-easyenergy
 
-[poetry-install]: https://python-poetry.org/docs/#installation
-[poetry]: https://python-poetry.org
+[uv-install]: https://docs.astral.sh/uv/getting-started/installation/
+[uv]: https://docs.astral.sh/uv/
 [prek]: https://github.com/j178/prek

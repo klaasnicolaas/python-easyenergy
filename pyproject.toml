@@ -32,12 +32,6 @@ cli = ["typer>=0.24.0,<1.0.0"]
 [project.scripts]
 easyenergy = "easyenergy.cli:cli"
 
-[tool.poetry]
-packages = [
-  { include = "easyenergy", from = "src"},
-]
-requires-poetry = '>=2.0'
-
 [project.urls]
 homepage = "https://github.com/klaasnicolaas/python-easyenergy"
 repository = "https://github.com/klaasnicolaas/python-easyenergy"
@@ -45,23 +39,25 @@ documentation = "https://github.com/klaasnicolaas/python-easyenergy"
 "Bug Tracker" = "https://github.com/klaasnicolaas/python-easyenergy/issues"
 Changelog = "https://github.com/klaasnicolaas/python-easyenergy/releases"
 
-[tool.poetry.group.dev.dependencies]
-aresponses = "3.0.0"
-codespell = "2.4.3"
-covdefaults = "2.3.0"
-coverage = {version = "7.16.2", extras = ["toml"]}
-pre-commit-hooks = "6.0.0"
-prek = "0.5.5"
-pytest = "9.1.1"
-pytest-asyncio = "1.4.0"
-pytest-cov = "7.1.0"
-pytest-freezer = "0.4.9"
-ruff = "0.16.10"
-syrupy = "6.1.1"
-ty = "0.0.85"
-typer = "0.25.0"
-yamllint = "1.38.0"
-zizmor = "1.30.1"
+[dependency-groups]
+dev = [
+  "aresponses==3.0.0",
+  "codespell==2.4.3",
+  "covdefaults==2.3.0",
+  "coverage[toml]==7.16.2",
+  "pre-commit-hooks==6.0.0",
+  "prek==0.5.5",
+  "pytest==9.1.1",
+  "pytest-asyncio==1.4.0",
+  "pytest-cov==7.1.0",
+  "pytest-freezer==0.4.9",
+  "ruff==0.16.10",
+  "syrupy==6.1.1",
+  "ty==0.0.85",
+  "typer==0.25.0",
+  "yamllint==1.38.0",
+  "zizmor==1.30.1",
+]
 
 [tool.coverage.run]
 plugins = ["covdefaults"]
@@ -108,5 +104,5 @@ runtime-evaluated-base-classes = ["mashumaro.mixins.orjson.DataClassORJSONMixin"
 max-complexity = 25
 
 [build-system]
-requires = ["poetry-core>=2.2.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.12.13,<0.13"]
+build-backend = "uv_build"
