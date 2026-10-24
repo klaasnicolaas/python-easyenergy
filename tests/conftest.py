@@ -17,7 +17,7 @@ def fixture_stable_terminal(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 @pytest.fixture(name="easyenergy_client")
-async def client() -> AsyncGenerator[EasyEnergy, None]:
+async def client() -> AsyncGenerator[EasyEnergy]:
     """Fixture to create a EasyEnergy client."""
     async with (
         ClientSession() as session,
